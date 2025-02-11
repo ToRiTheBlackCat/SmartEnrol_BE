@@ -28,17 +28,19 @@ namespace SmartEnrol.API.Controllers
                 return BadRequest();
 
             //Authenticate account
-            var (isAuthenticated, response) = await _accountService.Authenticate(request);
+            var (isAuthenticated,accountId, response) = await _accountService.Authenticate(request);
 
-            return isAuthenticated 
+            return isAuthenticated
                 ? Ok(new
-                    {
-                        Token = response
-                    }) 
+                {
+                    AccountId = accountId,
+                    Token = response
+                })
                 : BadRequest(new
-                    {
-                        Token = response
-                    });
+                {
+                    AccountId = accountId,
+                    Token = response
+                });
         }
     }
 }

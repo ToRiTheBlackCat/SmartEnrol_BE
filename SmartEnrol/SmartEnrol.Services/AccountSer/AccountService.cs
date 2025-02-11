@@ -30,10 +30,10 @@ namespace SmartEnrol.Services.AccountSer
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<(bool, string)> Authenticate(LoginModel login)
+        public async Task<(bool, string, string)> Authenticate(LoginModel login)
         {
             if (string.IsNullOrEmpty(login.Email) || string.IsNullOrEmpty(login.Password))
-                return (false, "Invalid email or password! Try again");
+                return (false,"", "Invalid email or password! Try again");
 
             //Hash password after concat with secret string with SHA256 algorithm
             login.Password = _encodingHelper.ComputeSHA256Hash(login.Password + _configuration["SecretString"]);
@@ -44,16 +44,16 @@ namespace SmartEnrol.Services.AccountSer
            
             //Check existing user
             if (foundUser == null)
-                return (false, "Not found any account with that email or password!");
+                return (false,"", "Not found any account with that email or password!");
 
             //Check status of that foundUser
             if (foundUser.IsActive == false)
-                return (false, "Account is not actived!");
+                return (false, "", "Account is not actived!");
 
             //Generate access token for user
             string accessToken =  _authenticationJWT.GenerateJwtToken(foundUser);
 
-            return (true, accessToken);
+            return (true,foundUser.AccountId.ToString().Trim(), accessToken);
         }
     }
 }

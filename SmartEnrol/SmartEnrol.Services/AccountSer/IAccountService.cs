@@ -9,6 +9,6 @@ namespace SmartEnrol.Services.AccountSer
 {
     public interface IAccountService
     {
-        Task<(bool, string)> Authenticate(LoginModel login);
+        Task<(bool, string, string)> Authenticate(LoginModel login);
     }
 }
