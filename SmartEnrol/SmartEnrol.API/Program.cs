@@ -17,7 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => {
+builder.Services.AddSwaggerGen(c =>
+{
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "SmartEnrol_API",
@@ -62,7 +63,7 @@ builder.Services.AddCors(options =>
 
 // Register for Helper Services
 builder.Services.AddScoped<AuthenticationJWT>();
-builder.Services.AddScoped<EncodingHelper>();
+builder.Services.AddScoped<GoogleLogin>();
 
 // Register for Services
 builder.Services.AddScoped<IAccountService, AccountService>();
@@ -94,7 +95,7 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["JWT:ValidAudience"],
         ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
         ClockSkew = TimeSpan.Zero,
-        RoleClaimType = ClaimTypes.Role 
+        RoleClaimType = ClaimTypes.Role
     };
 });
 

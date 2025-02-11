@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SmartEnrol.Services.Helper
 {
-    public class EncodingHelper
+    public static class EncodingHelper
     {
-        public string ComputeSHA256Hash(string rawData)
+        public static string ComputeSHA256Hash(string rawData)
         {
             using (SHA256 sha256Hash = SHA256.Create())
             {

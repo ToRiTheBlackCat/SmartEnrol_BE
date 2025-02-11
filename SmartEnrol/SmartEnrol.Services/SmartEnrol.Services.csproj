@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SmartEnrol.Repositories\SmartEnrol.Repositories.csproj">
       <Private>True</Private>
     </ProjectReference>

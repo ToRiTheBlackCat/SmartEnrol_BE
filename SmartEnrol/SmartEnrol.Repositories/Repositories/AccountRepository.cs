@@ -19,13 +19,14 @@ namespace SmartEnrol.Repositories.Repositories
         public async Task<Account?> GetAccountByEmailAndPasswordAsync(string email, string password)
         {
             var foundAccount = await _dbSet
-                    .FirstOrDefaultAsync(s => s.Email == email &&
+                  .FirstOrDefaultAsync(s => s.Email == email &&
                                               s.Password == password);
             if (foundAccount == null)
             {
                 return null;
             }
             var includedAccount = await GetAccountByIdWithIncludeAsync(foundAccount);
+
             return includedAccount;
         }
         private async Task<Account?> GetAccountByIdWithIncludeAsync(Account account)
@@ -34,6 +35,13 @@ namespace SmartEnrol.Repositories.Repositories
                                                                                  x => x.Role);
 
         }
+
+        public async Task<Account?> GetAccountByEmail(string email)
+        {
+            return await _dbSet.FirstOrDefaultAsync(s => s.Email == email);
+        }
+
+
 
     }
 }
