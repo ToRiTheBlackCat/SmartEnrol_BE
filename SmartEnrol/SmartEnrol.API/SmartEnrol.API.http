@@ -1,0 +1,6 @@
+@SmartEnrol.API_HostAddress = http://localhost:5051
+
+GET {{SmartEnrol.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
