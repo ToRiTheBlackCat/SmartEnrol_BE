@@ -1,0 +1,96 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "SmartEnrolContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": "Models123123",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "SmartEnrol.Repositories",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[Account]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AdmissionMethodOfMajor]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AdmissionMethodOfUni]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Characteristic]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CharacteristicOfField]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CharacteristicOfStudent]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Field]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[FieldOfUni]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Major]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Recommendation]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Role]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[University]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[WishListItem]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
+   "UseDateOnlyTimeOnly": true,
+   "UseDbContextSplitting": false,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false,
+   "UseT4Split": false
+}
