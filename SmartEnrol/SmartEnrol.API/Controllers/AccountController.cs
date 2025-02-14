@@ -16,7 +16,8 @@ namespace SmartEnrol.API.Controllers
         private readonly GoogleLogin _googleLogin;
         private IMapper _mapper;
         public AccountController(IAccountService accountService,
-                                 GoogleLogin googleLogin, IMapper mapper)
+                                 GoogleLogin googleLogin, 
+                                 IMapper mapper)
         {
             _accountService = accountService;
             _googleLogin = googleLogin;
@@ -76,13 +77,26 @@ namespace SmartEnrol.API.Controllers
         [HttpPatch("update-profile")]
         public async Task<IActionResult> UpdateProfile([FromBody] StudentAccountProfileModel model)
         {
-            if (model == null)
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var check = await _accountService.CheckIfExist(model.AccountId);
+            if (!check)
+                return NotFound("Account not found.");
+
             Account request = _mapper.Map<Account>(model);
-            var updatedAccount = await _accountService.UpdateUserProfile(request);
-            return updatedAccount != null
-                ? Ok(updatedAccount)
-                : BadRequest();
+            try
+            {
+                var updatedAccount = await _accountService.UpdateUserProfile(request);
+                return updatedAccount != null
+                    ? Ok(updatedAccount)
+                    : NotFound("Account not found.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error updating profile: {ex.Message}");
+            }
         }
+
     }
 }

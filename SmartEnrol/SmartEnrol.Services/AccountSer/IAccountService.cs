@@ -12,5 +12,6 @@ namespace SmartEnrol.Services.AccountSer
     {
         Task<(bool, string, string)> Authenticate(LoginModel login);
         Task<Account?> UpdateUserProfile(Account acc);
+        Task<bool> CheckIfExist(int accountId);
     }
 }
