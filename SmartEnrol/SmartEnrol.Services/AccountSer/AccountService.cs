@@ -55,6 +55,12 @@ namespace SmartEnrol.Services.AccountSer
             return (true, foundUser.AccountId.ToString().Trim(), accessToken);
         }
 
-
+        public async Task<Account> UpdateUserProfile(Account acc)
+        {
+            var up = await _unitOfWork.AccountRepository.UpdateAsync(acc);
+            if(up == null)
+                throw new Exception("Update user profile failed!");
+            return up;
+        }
     }
 }

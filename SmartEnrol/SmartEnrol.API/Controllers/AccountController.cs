@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.AccountSer;
 using SmartEnrol.Services.Helper;
 using SmartEnrol.Services.ViewModels.Student;
@@ -12,11 +14,13 @@ namespace SmartEnrol.API.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly GoogleLogin _googleLogin;
+        private IMapper _mapper;
         public AccountController(IAccountService accountService,
-                                 GoogleLogin googleLogin)
+                                 GoogleLogin googleLogin, IMapper mapper)
         {
             _accountService = accountService;
             _googleLogin = googleLogin;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -67,6 +71,18 @@ namespace SmartEnrol.API.Controllers
                     AccountId = accountId,
                     Token = response
                 });
+        }
+
+        [HttpPatch("update-profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] StudentAccountProfileModel model)
+        {
+            if (model == null)
+                return BadRequest();
+            Account request = _mapper.Map<Account>(model);
+            var updatedAccount = await _accountService.UpdateUserProfile(request);
+            return updatedAccount != null
+                ? Ok(updatedAccount)
+                : BadRequest();
         }
     }
 }
