@@ -55,12 +55,25 @@ namespace SmartEnrol.Services.AccountSer
             return (true, foundUser.AccountId.ToString().Trim(), accessToken);
         }
 
-        public async Task<Account> UpdateUserProfile(Account acc)
+        public async Task<Account?> UpdateUserProfile(Account acc)
         {
-            var up = await _unitOfWork.AccountRepository.UpdateAsync(acc);
-            if(up == null)
-                throw new Exception("Update user profile failed!");
-            return up;
+            if(acc == null)
+                return null;
+            try
+            {
+                var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(acc.AccountId);
+                if (foundUser == null)
+                    return null;
+                var up = await _unitOfWork.AccountRepository.UpdateAsync(acc);
+                await _unitOfWork.SaveChangesAsync();
+                if (up == null)
+                    throw new Exception("Update user profile failed!");
+                return up;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
