@@ -69,11 +69,11 @@ namespace SmartEnrol.Services.AccountSer
 
         public async Task<Account?> UpdateUserProfile(StudentAccountProfileModel acc)
         {
-            if(acc == null)
+            if (acc == null)
                 return null;
             try
             {
-                _unitOfWork.BeginTransactionAsync();
+                await _unitOfWork.BeginTransactionAsync();
                 var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(acc.AccountId);
                 if (foundUser == null)
                     return null;
@@ -82,13 +82,13 @@ namespace SmartEnrol.Services.AccountSer
                 await _unitOfWork.SaveChangesAsync();
                 if (up == null)
                     throw new Exception("Update user profile failed!");
+                await _unitOfWork.CommitTransactionAsync();
                 return up;
-                _unitOfWork.CommitTransactionAsync();
             }
             catch (Exception ex)
             {
+                await _unitOfWork.RollbackTransactionAsync();
                 throw new Exception(ex.Message);
-                _unitOfWork.RollbackTransactionAsync();
             }
         }
     }
