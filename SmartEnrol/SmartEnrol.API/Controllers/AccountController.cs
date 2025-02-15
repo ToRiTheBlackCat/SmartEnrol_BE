@@ -70,6 +70,10 @@ namespace SmartEnrol.API.Controllers
                 });
         }
 
+        /// <summary>
+        /// Signup Account
+        /// SignupAccountModel
+        /// </summary>
         [HttpPost("signup")]
         public async Task<IActionResult> AccountSignup([FromBody] AccountSignupModel account)
         {
