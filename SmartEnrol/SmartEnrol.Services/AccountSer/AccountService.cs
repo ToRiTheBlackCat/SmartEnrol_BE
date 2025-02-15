@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SmartEnrol.Services.AccountSer
 {
@@ -19,14 +20,17 @@ namespace SmartEnrol.Services.AccountSer
         private readonly AuthenticationJWT _authenticationJWT;
         private readonly IConfiguration _configuration;
         private readonly UnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public AccountService(AuthenticationJWT authenticationJWT,
                                IConfiguration confiiguration,
-                               UnitOfWork unitOfWork)
+                               UnitOfWork unitOfWork,
+                               IMapper mapper)
         {
             _authenticationJWT = authenticationJWT;
             _configuration = confiiguration;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<(string,AccountSignupModel?,Account?)> AccountSignup(AccountSignupModel account)
@@ -92,6 +96,37 @@ namespace SmartEnrol.Services.AccountSer
             return (true, foundUser.AccountId.ToString().Trim(), accessToken);
         }
 
+        public async Task<bool> CheckIfExist(int accountId)
+        {
+            var acc = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+            if (acc == null)
+                return false;
+            return true;
+        }
 
+        public async Task<Account?> UpdateUserProfile(StudentAccountProfileModel acc)
+        {
+            if(acc == null)
+                return null;
+            try
+            {
+                _unitOfWork.BeginTransactionAsync();
+                var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(acc.AccountId);
+                if (foundUser == null)
+                    return null;
+                Account account = _mapper.Map<StudentAccountProfileModel, Account>(acc);
+                var up = await _unitOfWork.AccountRepository.UpdateAsync(account);
+                await _unitOfWork.SaveChangesAsync();
+                if (up == null)
+                    throw new Exception("Update user profile failed!");
+                return up;
+                _unitOfWork.CommitTransactionAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+                _unitOfWork.RollbackTransactionAsync();
+            }
+        }
     }
 }

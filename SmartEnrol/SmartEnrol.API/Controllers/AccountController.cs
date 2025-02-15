@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.AccountSer;
 using SmartEnrol.Services.Helper;
 using SmartEnrol.Services.ViewModels.Student;
@@ -85,5 +86,28 @@ namespace SmartEnrol.API.Controllers
             }
             );
         }
+
+        [HttpPatch("update-profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] StudentAccountProfileModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var check = await _accountService.CheckIfExist(model.AccountId);
+            if (!check)
+                return NotFound("Account not found.");           
+            try
+            {
+                var updatedAccount = await _accountService.UpdateUserProfile(model);
+                return updatedAccount != null
+                    ? Ok(updatedAccount)
+                    : NotFound("Account not found.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error updating profile: {ex.Message}");
+            }
+        }
+
     }
 }

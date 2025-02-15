@@ -288,6 +288,5 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 
-# Custom ignore 
+/SmartEnrolScript_ver2.SQL
 /SmartEnrol/SmartEnrol.API/appsettings.Development.json
-/.gitignore

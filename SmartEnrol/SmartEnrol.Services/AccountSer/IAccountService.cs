@@ -12,5 +12,7 @@ namespace SmartEnrol.Services.AccountSer
     {
         Task<(string,AccountSignupModel?,Account?)> AccountSignup(AccountSignupModel account);
         Task<(bool, string, string)> Authenticate(LoginModel login);
+        Task<Account?> UpdateUserProfile(StudentAccountProfileModel acc);
+        Task<bool> CheckIfExist(int accountId);
     }
 }
