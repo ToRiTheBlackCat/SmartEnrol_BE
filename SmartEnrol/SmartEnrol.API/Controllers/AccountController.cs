@@ -73,18 +73,28 @@ namespace SmartEnrol.API.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> AccountSignup([FromBody] AccountSignupModel account)
         {
-            if(string.IsNullOrEmpty(account.AccountName) || string.IsNullOrEmpty(account.Email)
-                || string.IsNullOrEmpty(account.Password) || string.IsNullOrEmpty(account.ConfirmPassword))
-                return BadRequest();
-
-            var (resultString, submittedData, returnData) = await _accountService.AccountSignup(account);
-            return Ok(new
+            try
             {
-                result = resultString,
-                submitData = submittedData,
-                returnData = returnData
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                if (string.IsNullOrEmpty(account.AccountName) || string.IsNullOrEmpty(account.Email)
+                    || string.IsNullOrEmpty(account.Password) || string.IsNullOrEmpty(account.ConfirmPassword))
+                    return BadRequest();
+
+                var (resultString, submittedData, returnData) = await _accountService.AccountSignup(account);
+                return Ok(new
+                {
+                    result = resultString,
+                    submitData = submittedData,
+                    returnData = returnData
+                }
+                );
             }
-            );
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            } 
         }
 
         [HttpPatch("update-profile")]
