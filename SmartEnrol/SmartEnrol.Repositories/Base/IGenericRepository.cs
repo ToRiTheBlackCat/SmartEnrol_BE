@@ -17,7 +17,7 @@ namespace SmartEnrol.Repositories.Base
         void Add(T item);
         Task<int> AddAsync(T item);
         void Update(T item);
-        Task<int> UpdatAeAsync(T item);
+        Task<int> UpdatAsync(T item);
         bool Delete(T item);
         Task<bool> DeleteAsync(T? item);
 

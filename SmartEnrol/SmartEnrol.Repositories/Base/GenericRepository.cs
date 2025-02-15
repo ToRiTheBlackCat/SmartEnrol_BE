@@ -102,7 +102,7 @@ namespace SmartEnrol.Repositories.Base
             _context.SaveChanges();
         }
 
-        public async Task<int> UpdatAeAsync(T item)
+        public async Task<int> UpdatAsync(T item)
         {
             var tracker = _context.Attach(item);
             tracker.State = EntityState.Modified;
