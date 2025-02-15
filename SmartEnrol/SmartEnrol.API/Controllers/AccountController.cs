@@ -68,5 +68,22 @@ namespace SmartEnrol.API.Controllers
                     Token = response
                 });
         }
+
+        [HttpPost("signup")]
+        public async Task<IActionResult> AccountSignup([FromBody] AccountSignupModel account)
+        {
+            if(string.IsNullOrEmpty(account.AccountName) || string.IsNullOrEmpty(account.Email)
+                || string.IsNullOrEmpty(account.Password) || string.IsNullOrEmpty(account.ConfirmPassword))
+                return BadRequest();
+
+            var (resultString, submittedData, returnData) = await _accountService.AccountSignup(account);
+            return Ok(new
+            {
+                result = resultString,
+                submitData = submittedData,
+                returnData = returnData
+            }
+            );
+        }
     }
 }

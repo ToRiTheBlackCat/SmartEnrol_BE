@@ -291,4 +291,3 @@ __pycache__/
 # Custom ignore 
 /SmartEnrol/SmartEnrol.API/appsettings.Development.json
 /.gitignore
-/SmartEnrol/SmartEnrol.API/appsettings.Development.json

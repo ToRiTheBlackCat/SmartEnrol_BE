@@ -33,15 +33,22 @@ namespace SmartEnrol.Repositories.Repositories
         {
             return await GetByIdWithIncludeAsync(account.AccountId, "AccountId", x => x.WishListItems,
                                                                                  x => x.Role);
-
         }
 
         public async Task<Account?> GetAccountByEmail(string email)
         {
             return await _dbSet.FirstOrDefaultAsync(s => s.Email == email);
         }
+        
+        public async Task<Account?> GetAccountByAccountName(string accountName)
+        {
+            return await _dbSet.FirstOrDefaultAsync(s => s.AccountName == accountName);
+        }
 
-
-
+        public async Task<Account?> AccountSignup(Account account)
+        {
+            var result = await AddAsync(account);
+            return await GetAccountByEmail(account.Email);
+        }
     }
 }
