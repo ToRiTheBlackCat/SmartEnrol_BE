@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -64,6 +65,12 @@ builder.Services.AddCors(options =>
 // Register for Helper Services
 builder.Services.AddScoped<AuthenticationJWT>();
 builder.Services.AddScoped<GoogleLogin>();
+builder.Services.AddScoped<MappingProfile>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+
+
+
 
 // Register for Services
 builder.Services.AddScoped<IAccountService, AccountService>();
