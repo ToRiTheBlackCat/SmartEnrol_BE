@@ -73,9 +73,10 @@ namespace SmartEnrol.API.Controllers
         [HttpPatch("update-profile")]
         public async Task<IActionResult> UpdateProfile([FromBody] StudentAccountProfileModel model)
         {
+            //Check required fields
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
+            //Check if account exist
             var check = await _accountService.CheckIfExist(model.AccountId);
             if (!check)
                 return NotFound("Account not found.");           
