@@ -290,3 +290,4 @@ __pycache__/
 
 /SmartEnrolScript_ver2.SQL
 /SmartEnrol/SmartEnrol.API/appsettings.Development.json
+/.gitignore

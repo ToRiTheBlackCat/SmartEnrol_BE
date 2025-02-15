@@ -44,11 +44,5 @@ namespace SmartEnrol.Repositories.Repositories
         {
             return await _dbSet.FirstOrDefaultAsync(s => s.AccountName == accountName);
         }
-
-        public async Task<Account?> AccountSignup(Account account)
-        {
-            var result = await AddAsync(account);
-            return await GetAccountByEmail(account.Email);
-        }
     }
 }

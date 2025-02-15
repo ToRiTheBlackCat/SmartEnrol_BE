@@ -80,9 +80,15 @@ namespace SmartEnrol.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (string.IsNullOrEmpty(account.AccountName) || string.IsNullOrEmpty(account.Email)
-                || string.IsNullOrEmpty(account.Password) || string.IsNullOrEmpty(account.ConfirmPassword))
-                return BadRequest();
+            if (account.Password != account.ConfirmPassword)
+            {
+                return Ok(new
+                {
+                    result = "Password doesn't match!",
+                    submitData = account
+                }
+                );
+            }
 
             var (resultString, submittedData, returnData) = await _accountService.AccountSignup(account);
                 return Ok(new

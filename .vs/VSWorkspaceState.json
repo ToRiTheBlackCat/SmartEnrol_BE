@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\SmartEnrol",
-    "\\SmartEnrol\\SmartEnrol.API"
+    "\\SmartEnrol\\SmartEnrol.API",
+    "\\SmartEnrol\\SmartEnrol.Services",
+    "\\SmartEnrol\\SmartEnrol.Services\\AccountSer"
   ],
-  "SelectedNode": "\\SmartEnrol",
+  "SelectedNode": "\\SmartEnrol\\SmartEnrol.sln",
   "PreviewInSolutionExplorer": false
 }
