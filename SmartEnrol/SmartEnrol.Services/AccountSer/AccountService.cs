@@ -72,7 +72,8 @@ namespace SmartEnrol.Services.AccountSer
             if(acc == null)
                 return null;
             try
-            {                
+            {
+                await _unitOfWork.BeginTransactionAsync();
                 var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(acc.AccountId);
                 if (foundUser == null)
                     return null;
@@ -85,10 +86,12 @@ namespace SmartEnrol.Services.AccountSer
                 await _unitOfWork.SaveChangesAsync();
                 if (up == null)
                     throw new Exception("Update user profile failed!");
+                await _unitOfWork.CommitTransactionAsync();
                 return up;
             }
             catch (Exception ex)
             {
+                await _unitOfWork.RollbackTransactionAsync();
                 throw new Exception(ex.Message);
             }
         }
