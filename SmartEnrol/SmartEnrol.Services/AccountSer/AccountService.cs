@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SmartEnrol.Services.AccountSer
 {
@@ -19,14 +20,17 @@ namespace SmartEnrol.Services.AccountSer
         private readonly AuthenticationJWT _authenticationJWT;
         private readonly IConfiguration _configuration;
         private readonly UnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public AccountService(AuthenticationJWT authenticationJWT,
                                IConfiguration confiiguration,
-                               UnitOfWork unitOfWork)
+                               UnitOfWork unitOfWork,
+                               IMapper mapper)
         {
             _authenticationJWT = authenticationJWT;
             _configuration = confiiguration;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<(bool, string, string)> Authenticate(LoginModel login)
@@ -63,7 +67,7 @@ namespace SmartEnrol.Services.AccountSer
             return true;
         }
 
-        public async Task<Account?> UpdateUserProfile(Account acc)
+        public async Task<Account?> UpdateUserProfile(StudentAccountProfileModel acc)
         {
             if(acc == null)
                 return null;
@@ -73,7 +77,8 @@ namespace SmartEnrol.Services.AccountSer
                 var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(acc.AccountId);
                 if (foundUser == null)
                     return null;
-                var up = await _unitOfWork.AccountRepository.UpdateAsync(acc);
+                Account account = _mapper.Map<StudentAccountProfileModel, Account>(acc);
+                var up = await _unitOfWork.AccountRepository.UpdateAsync(account);
                 await _unitOfWork.SaveChangesAsync();
                 if (up == null)
                     throw new Exception("Update user profile failed!");

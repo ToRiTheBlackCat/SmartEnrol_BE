@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.AccountSer;
@@ -14,14 +13,11 @@ namespace SmartEnrol.API.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly GoogleLogin _googleLogin;
-        private IMapper _mapper;
         public AccountController(IAccountService accountService,
-                                 GoogleLogin googleLogin, 
-                                 IMapper mapper)
+                                 GoogleLogin googleLogin)
         {
             _accountService = accountService;
             _googleLogin = googleLogin;
-            _mapper = mapper;
         }
 
         /// <summary>
@@ -82,12 +78,10 @@ namespace SmartEnrol.API.Controllers
 
             var check = await _accountService.CheckIfExist(model.AccountId);
             if (!check)
-                return NotFound("Account not found.");
-
-            Account request = _mapper.Map<Account>(model);
+                return NotFound("Account not found.");           
             try
             {
-                var updatedAccount = await _accountService.UpdateUserProfile(request);
+                var updatedAccount = await _accountService.UpdateUserProfile(model);
                 return updatedAccount != null
                     ? Ok(updatedAccount)
                     : NotFound("Account not found.");
