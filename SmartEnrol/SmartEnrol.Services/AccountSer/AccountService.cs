@@ -69,7 +69,7 @@ namespace SmartEnrol.Services.AccountSer
 
         public async Task<Account?> UpdateUserProfile(StudentAccountProfileModel acc)
         {
-            if(acc == null)
+            if (acc == null)
                 return null;
             try
             {

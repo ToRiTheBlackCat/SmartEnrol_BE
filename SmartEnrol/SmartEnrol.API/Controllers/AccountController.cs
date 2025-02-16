@@ -33,7 +33,7 @@ namespace SmartEnrol.API.Controllers
                 return BadRequest();
 
             //Authenticate account
-            var (isAuthenticated,accountId, response) = await _accountService.Authenticate(request);
+            var (isAuthenticated, accountId, response) = await _accountService.Authenticate(request);
 
             return isAuthenticated
                 ? Ok(new
@@ -70,6 +70,10 @@ namespace SmartEnrol.API.Controllers
                 });
         }
 
+        /// <summary>
+        /// Update Account Profile
+        /// StudentAccountProfileModel
+        /// </summary>
         [HttpPatch("update-profile")]
         public async Task<IActionResult> UpdateProfile([FromBody] StudentAccountProfileModel model)
         {
@@ -79,19 +83,13 @@ namespace SmartEnrol.API.Controllers
             //Check if account exist
             var check = await _accountService.CheckIfExist(model.AccountId);
             if (!check)
-                return NotFound("Account not found.");           
-            try
-            {
-                var updatedAccount = await _accountService.UpdateUserProfile(model);
-                return updatedAccount != null
-                    ? Ok(updatedAccount)
-                    : NotFound("Account not found.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error updating profile: {ex.Message}");
-            }
-        }
+                return NotFound("Account not found.");
 
+            var updatedAccount = await _accountService.UpdateUserProfile(model);
+
+            return updatedAccount != null
+                ? Ok(updatedAccount)
+                : BadRequest("Account not found.");
+        }
     }
 }
