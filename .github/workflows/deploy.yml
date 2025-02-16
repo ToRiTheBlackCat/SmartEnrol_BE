@@ -1,0 +1,36 @@
+name: Deploy .NET 8 API to Azure
+
+on:
+  push:
+    branches:
+      - dev  # Change this to match your main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore Dependencies
+        run: dotnet restore
+
+      - name: Build Project
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Publish Project
+        run: dotnet publish -c Release -o publish_output
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: smartenrol-api  # Replace with your Azure App Service name
+          slot-name: production
+          package: publish_output
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
