@@ -3,7 +3,7 @@ name: Deploy .NET 8 API to Azure
 on:
   push:
     branches:
-      - dev  # Change this to match your main branch
+      - main  # Change this to match your main branch
   workflow_dispatch:
 jobs:
   build:
