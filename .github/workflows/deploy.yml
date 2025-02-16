@@ -19,13 +19,13 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore Dependencies
-        run: dotnet restore SmartEnrol/SmartEnrol.csproj
+        run: dotnet restore SmartEnrol/SmartEnrol.API.csproj
 
       - name: Build Project
-        run: dotnet build SmartEnrol/SmartEnrol.csproj --configuration Release --no-restore
+        run: dotnet build SmartEnrol/SmartEnrol.API.csproj --configuration Release --no-restore
 
       - name: Publish Project
-        run: dotnet publish SmartEnrol/SmartEnrol.csproj -c Release -o publish_output
+        run: dotnet publish SmartEnrol/SmartEnrol.API.csproj -c Release -o publish_output
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
