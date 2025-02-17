@@ -77,15 +77,15 @@ namespace SmartEnrol.Services.AccountSer
                 var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(acc.AccountId);
                 if (foundUser == null)
                     return null;
-                foundUser.AccountName = acc.AccountName;
-                foundUser.Email = acc.Email;
-
-                var up = await _unitOfWork.AccountRepository.UpdateAsync(foundUser);
-
-                if (up == null)
-                    return null;
-
+                Account account = _mapper.Map<StudentAccountProfileModel, Account>(acc);
+                account.Password = foundUser.Password;
+                account.IsActive = foundUser.IsActive;
+                account.RoleId = foundUser.RoleId;
+                account.CreatedDate = foundUser.CreatedDate;
+                var up = await _unitOfWork.AccountRepository.UpdateAsync(account);
                 await _unitOfWork.SaveChangesAsync();
+                if (up == null)
+                    throw new Exception("Update user profile failed!");
                 await _unitOfWork.CommitTransactionAsync();
                 return up;
             }

@@ -17,11 +17,10 @@ namespace SmartEnrol.Services.ViewModels.Student
         public int AccountId { get; set; }
 
         [Required]
-        public string AccountName { get; set; }
+        public required string AccountName { get; set; }
 
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public required string Email { get; set; }
     }   
 
 }
