@@ -5,15 +5,15 @@ using System.Collections.Generic;
 
 namespace SmartEnrol.Repositories.Models;
 
-public partial class Recommendation
+public partial class WishList
 {
-    public int RecommendationId { get; set; }
+    public int WishListId { get; set; }
 
     public int AccountId { get; set; }
 
-    public DateTime CreatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
 
     public virtual Account Account { get; set; }
 
-    public virtual ICollection<RecommendationDetail> RecommendationDetails { get; set; } = new List<RecommendationDetail>();
+    public virtual ICollection<WishListItem> WishListItems { get; set; } = new List<WishListItem>();
 }

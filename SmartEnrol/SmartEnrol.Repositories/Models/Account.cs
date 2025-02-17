@@ -15,11 +15,15 @@ public partial class Account
 
     public string Password { get; set; }
 
-    public DateTime? CreatedDate { get; set; }
-
     public int RoleId { get; set; }
 
-    public bool? IsActive { get; set; }
+    public int? AreaId { get; set; }
+
+    public DateTime CreatedDate { get; set; }
+
+    public bool IsActive { get; set; }
+
+    public virtual Area Area { get; set; }
 
     public virtual ICollection<CharacteristicOfStudent> CharacteristicOfStudents { get; set; } = new List<CharacteristicOfStudent>();
 
@@ -27,5 +31,5 @@ public partial class Account
 
     public virtual Role Role { get; set; }
 
-    public virtual ICollection<WishListItem> WishListItems { get; set; } = new List<WishListItem>();
+    public virtual ICollection<WishList> WishLists { get; set; } = new List<WishList>();
 }

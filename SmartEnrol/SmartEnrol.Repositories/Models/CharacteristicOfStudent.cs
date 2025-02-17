@@ -7,7 +7,7 @@ namespace SmartEnrol.Repositories.Models;
 
 public partial class CharacteristicOfStudent
 {
-    public int Id { get; set; }
+    public int CharacteristicOfStudentId { get; set; }
 
     public int CharacteristicId { get; set; }
 
