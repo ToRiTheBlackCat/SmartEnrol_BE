@@ -71,6 +71,36 @@ namespace SmartEnrol.API.Controllers
         }
 
         /// <summary>
+        /// Signup Account
+        /// SignupAccountModel
+        /// </summary>
+        [HttpPost("signup")]
+        public async Task<IActionResult> AccountSignup([FromBody] AccountSignupModel account)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (account.Password != account.ConfirmPassword)
+            {
+                return Ok(new
+                {
+                    result = "Password doesn't match!",
+                    submitData = account
+                }
+                );
+            }
+
+            var (resultString, submittedData, returnData) = await _accountService.AccountSignup(account);
+                return Ok(new
+                {
+                    result = resultString,
+                    submitData = submittedData,
+                    returnData = returnData
+                }
+                ); 
+        }
+
+        /// <summary>
         /// Update Account Profile
         /// StudentAccountProfileModel
         /// </summary>

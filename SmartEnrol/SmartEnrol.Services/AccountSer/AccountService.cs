@@ -11,6 +11,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using SmartEnrol.Services.Constant;
 
 namespace SmartEnrol.Services.AccountSer
 {
@@ -31,6 +32,65 @@ namespace SmartEnrol.Services.AccountSer
             _configuration = confiiguration;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+
+        public async Task<(string,AccountSignupModel?,Account?)> AccountSignup(AccountSignupModel account)
+        {
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync();
+
+                // Hash Pass for storage using sha256
+                account.Password = EncodingHelper.ComputeSHA256Hash(account.Password + _configuration["SecretString"]);
+                account.ConfirmPassword = EncodingHelper.ComputeSHA256Hash(account.Password + _configuration["SecretString"]);
+
+                // Check existing account
+                var existingUser = await _unitOfWork.AccountRepository
+                    .GetAccountByEmail(account.Email);
+
+                if (existingUser != null)
+                {
+                    if (existingUser.IsActive == true)
+                        return ("This email has an active account!", account, null);
+                    return ("This account is deactivated!", account, null);
+                }
+
+                // Check username availability
+                var existingName = await _unitOfWork.AccountRepository.GetAccountByAccountName(account.AccountName);
+
+                if (existingName != null)
+                    return ("This username is taken!", account, null);
+
+                // Create account if all check passes
+                Account newUser = new Account()
+                {
+                    AccountName = account.AccountName,
+                    Email = account.Email,
+                    Password = account.Password,
+                    RoleId = (int)ConstantEnum.RoleID.STUDENT,
+                    CreatedDate = DateTime.UtcNow,
+                    IsActive = true
+                };
+
+                var result = await _unitOfWork.AccountRepository
+                    .AddAsync(newUser); 
+                await _unitOfWork.SaveChangesAsync();
+
+                // If database transaction fails
+                if(result == 0)
+                    throw new Exception("Error creating account!");
+
+                await _unitOfWork.CommitTransactionAsync();
+
+                var user = await _unitOfWork.AccountRepository.GetAccountByEmail(account.Email);
+
+                return ("Account created successfully!", account, user);
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<(bool, string, string)> Authenticate(LoginModel login)
