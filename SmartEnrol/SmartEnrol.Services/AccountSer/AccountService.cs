@@ -10,6 +10,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using SmartEnrol.Services.Constant;
 
 namespace SmartEnrol.Services.AccountSer
 {
@@ -19,14 +21,76 @@ namespace SmartEnrol.Services.AccountSer
         private readonly AuthenticationJWT _authenticationJWT;
         private readonly IConfiguration _configuration;
         private readonly UnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
         public AccountService(AuthenticationJWT authenticationJWT,
                                IConfiguration confiiguration,
-                               UnitOfWork unitOfWork)
+                               UnitOfWork unitOfWork,
+                               IMapper mapper)
         {
             _authenticationJWT = authenticationJWT;
             _configuration = confiiguration;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        public async Task<(string,AccountSignupModel?,Account?)> AccountSignup(AccountSignupModel account)
+        {
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync();
+
+                // Hash Pass for storage using sha256
+                account.Password = EncodingHelper.ComputeSHA256Hash(account.Password + _configuration["SecretString"]);
+                account.ConfirmPassword = EncodingHelper.ComputeSHA256Hash(account.Password + _configuration["SecretString"]);
+
+                // Check existing account
+                var existingUser = await _unitOfWork.AccountRepository
+                    .GetAccountByEmail(account.Email);
+
+                if (existingUser != null)
+                {
+                    if (existingUser.IsActive == true)
+                        return ("This email has an active account!", account, null);
+                    return ("This account is deactivated!", account, null);
+                }
+
+                // Check username availability
+                var existingName = await _unitOfWork.AccountRepository.GetAccountByAccountName(account.AccountName);
+
+                if (existingName != null)
+                    return ("This username is taken!", account, null);
+
+                // Create account if all check passes
+                Account newUser = new Account()
+                {
+                    AccountName = account.AccountName,
+                    Email = account.Email,
+                    Password = account.Password,
+                    RoleId = (int)ConstantEnum.RoleID.STUDENT,
+                    CreatedDate = DateTime.UtcNow,
+                    IsActive = true
+                };
+
+                var result = await _unitOfWork.AccountRepository
+                    .AddAsync(newUser); 
+                await _unitOfWork.SaveChangesAsync();
+
+                // If database transaction fails
+                if(result == 0)
+                    throw new Exception("Error creating account!");
+
+                await _unitOfWork.CommitTransactionAsync();
+
+                var user = await _unitOfWork.AccountRepository.GetAccountByEmail(account.Email);
+
+                return ("Account created successfully!", account, user);
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<(bool, string, string)> Authenticate(LoginModel login)
@@ -55,6 +119,41 @@ namespace SmartEnrol.Services.AccountSer
             return (true, foundUser.AccountId.ToString().Trim(), accessToken);
         }
 
+        public async Task<bool> CheckIfExist(int accountId)
+        {
+            var acc = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+            if (acc == null)
+                return false;
+            return true;
+        }
 
+        public async Task<Account?> UpdateUserProfile(StudentAccountProfileModel acc)
+        {
+            if (acc == null)
+                return null;
+            try
+            {
+                await _unitOfWork.BeginTransactionAsync();
+                var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(acc.AccountId);
+                if (foundUser == null)
+                    return null;
+                Account account = _mapper.Map<StudentAccountProfileModel, Account>(acc);
+                account.Password = foundUser.Password;
+                account.IsActive = foundUser.IsActive;
+                account.RoleId = foundUser.RoleId;
+                account.CreatedDate = foundUser.CreatedDate;
+                var up = await _unitOfWork.AccountRepository.UpdateAsync(account);
+                await _unitOfWork.SaveChangesAsync();
+                if (up == null)
+                    throw new Exception("Update user profile failed!");
+                await _unitOfWork.CommitTransactionAsync();
+                return up;
+            }
+            catch (Exception ex)
+            {
+                await _unitOfWork.RollbackTransactionAsync();
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
