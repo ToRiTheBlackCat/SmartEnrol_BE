@@ -7,13 +7,19 @@ namespace SmartEnrol.Repositories.Models;
 
 public partial class WishListItem
 {
-    public int Id { get; set; }
+    public int ItemId { get; set; }
 
-    public int AccountId { get; set; }
+    public int? UniMajorId { get; set; }
 
-    public int MajorId { get; set; }
+    public int? UniId { get; set; }
 
-    public virtual Account Account { get; set; }
+    public int WishListId { get; set; }
 
-    public virtual Major Major { get; set; }
+    public bool IsActive { get; set; }
+
+    public virtual University Uni { get; set; }
+
+    public virtual UniMajor UniMajor { get; set; }
+
+    public virtual WishList WishList { get; set; }
 }

@@ -11,7 +11,7 @@ public partial class Characteristic
 
     public string CharacteristicName { get; set; }
 
-    public virtual ICollection<CharacteristicOfField> CharacteristicOfFields { get; set; } = new List<CharacteristicOfField>();
+    public virtual ICollection<CharacteristicOfMajor> CharacteristicOfMajors { get; set; } = new List<CharacteristicOfMajor>();
 
     public virtual ICollection<CharacteristicOfStudent> CharacteristicOfStudents { get; set; } = new List<CharacteristicOfStudent>();
 }

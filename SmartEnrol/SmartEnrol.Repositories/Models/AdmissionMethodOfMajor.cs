@@ -9,13 +9,13 @@ public partial class AdmissionMethodOfMajor
 {
     public int AdmissionMethodsOfMajorId { get; set; }
 
-    public int MajorId { get; set; }
+    public int UniMajorId { get; set; }
 
-    public int AdmissionMethodId { get; set; }
+    public int AdmissionMethodOfUniId { get; set; }
 
-    public int AdmissionTargets { get; set; }
+    public int? AdmissionTargets { get; set; }
 
-    public virtual AdmissionMethodOfUni AdmissionMethod { get; set; }
+    public virtual AdmissionMethodOfUni AdmissionMethodOfUni { get; set; }
 
-    public virtual Major Major { get; set; }
+    public virtual UniMajor UniMajor { get; set; }
 }

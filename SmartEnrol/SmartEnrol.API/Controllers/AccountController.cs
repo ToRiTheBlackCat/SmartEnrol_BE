@@ -28,11 +28,11 @@ namespace SmartEnrol.API.Controllers
         public async Task<IActionResult> LoginWithEmailAndPassword([FromBody] LoginModel request)
         {
             //Check required fields
-            if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             //Authenticate account
-            var (isAuthenticated,accountId, response) = await _accountService.Authenticate(request);
+            var (isAuthenticated, accountId, response) = await _accountService.Authenticate(request);
 
             return isAuthenticated
                 ? Ok(new

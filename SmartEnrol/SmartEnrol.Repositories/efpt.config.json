@@ -6,7 +6,7 @@
    "IncludeConnectionString": true,
    "ModelNamespace": null,
    "OutputContextPath": null,
-   "OutputPath": "Models123123",
+   "OutputPath": "Models99",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "SmartEnrol.Repositories",
    "Schemas": null,
@@ -27,23 +27,19 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Area]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Characteristic]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[CharacteristicOfField]",
+         "Name": "[dbo].[CharacteristicOfMajor]",
          "ObjectType": 0
       },
       {
          "Name": "[dbo].[CharacteristicOfStudent]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Field]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[FieldOfUni]",
          "ObjectType": 0
       },
       {
@@ -55,11 +51,23 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[RecommendationDetail]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Role]",
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[UniMajor]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[University]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[WishList]",
          "ObjectType": 0
       },
       {

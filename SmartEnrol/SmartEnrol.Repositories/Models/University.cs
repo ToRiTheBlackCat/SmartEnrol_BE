@@ -7,13 +7,15 @@ namespace SmartEnrol.Repositories.Models;
 
 public partial class University
 {
-    public int UniversityId { get; set; }
+    public int UniId { get; set; }
 
-    public string UniversityName { get; set; }
+    public string UniName { get; set; }
 
-    public string Code { get; set; }
+    public string UniCode { get; set; }
 
     public string Location { get; set; }
+
+    public int AreaId { get; set; }
 
     public string Email { get; set; }
 
@@ -23,5 +25,9 @@ public partial class University
 
     public virtual ICollection<AdmissionMethodOfUni> AdmissionMethodOfUnis { get; set; } = new List<AdmissionMethodOfUni>();
 
-    public virtual ICollection<FieldOfUni> FieldOfUnis { get; set; } = new List<FieldOfUni>();
+    public virtual Area Area { get; set; }
+
+    public virtual ICollection<UniMajor> UniMajors { get; set; } = new List<UniMajor>();
+
+    public virtual ICollection<WishListItem> WishListItems { get; set; } = new List<WishListItem>();
 }
