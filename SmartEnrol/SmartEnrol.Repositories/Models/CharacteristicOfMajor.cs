@@ -5,17 +5,15 @@ using System.Collections.Generic;
 
 namespace SmartEnrol.Repositories.Models;
 
-public partial class CharacteristicOfField
+public partial class CharacteristicOfMajor
 {
-    public int CharacteristicsOfFieldId { get; set; }
-
-    public int FieldId { get; set; }
+    public int CharacteristicOfMajorId { get; set; }
 
     public int CharacteristicId { get; set; }
 
-    public int MinScore { get; set; }
+    public int MajorId { get; set; }
 
     public virtual Characteristic Characteristic { get; set; }
 
-    public virtual Field Field { get; set; }
+    public virtual Major Major { get; set; }
 }

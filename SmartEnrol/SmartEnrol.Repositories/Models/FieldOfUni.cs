@@ -13,7 +13,7 @@ public partial class FieldOfUni
 
     public int FieldId { get; set; }
 
-    public virtual Field Field { get; set; }
+    public virtual Major Field { get; set; }
 
     public virtual ICollection<Major> Majors { get; set; } = new List<Major>();
 
