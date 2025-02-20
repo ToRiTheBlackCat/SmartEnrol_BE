@@ -12,12 +12,11 @@ namespace SmartEnrol.Services.Constant
         {
             public const string ADMIN = "Admin";
             public const string STUDENT = "Student";
-            public const string STAFF = "Staff";
         }
 
         public enum RoleID
         {
-            STUDENT = 3,
+            STUDENT = 2,
             ADMIN = 1
         }
 
