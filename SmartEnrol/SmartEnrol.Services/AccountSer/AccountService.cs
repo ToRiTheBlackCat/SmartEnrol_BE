@@ -34,7 +34,7 @@ namespace SmartEnrol.Services.AccountSer
             _mapper = mapper;
         }
 
-        public async Task<(string,AccountSignupModel?,Account?)> AccountSignup(AccountSignupModel account)
+        public async Task<(string,AccountSignupModel?)> AccountSignup(AccountSignupModel account)
         {
             try
             {
@@ -51,15 +51,15 @@ namespace SmartEnrol.Services.AccountSer
                 if (existingUser != null)
                 {
                     if (existingUser.IsActive == true)
-                        return ("This email has an active account!", account, null);
-                    return ("This account is deactivated!", account, null);
+                        return ("This email has an active account!", account);
+                    return ("This account is deactivated!", account);
                 }
 
                 // Check username availability
                 var existingName = await _unitOfWork.AccountRepository.GetAccountByAccountName(account.AccountName);
 
                 if (existingName != null)
-                    return ("This username is taken!", account, null);
+                    return ("This username is taken!", account);
 
                 // Create account if all check passes
                 Account newUser = new Account()
@@ -68,6 +68,7 @@ namespace SmartEnrol.Services.AccountSer
                     Email = account.Email,
                     Password = account.Password,
                     RoleId = (int)ConstantEnum.RoleID.STUDENT,
+                    AreaId = 1,
                     CreatedDate = DateTime.UtcNow,
                     IsActive = true
                 };
@@ -84,7 +85,7 @@ namespace SmartEnrol.Services.AccountSer
 
                 var user = await _unitOfWork.AccountRepository.GetAccountByEmail(account.Email);
 
-                return ("Account created successfully!", account, user);
+                return ("Account created successfully!", account);
             }
             catch (Exception ex)
             {

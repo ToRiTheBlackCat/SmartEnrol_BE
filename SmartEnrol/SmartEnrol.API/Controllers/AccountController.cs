@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.AccountSer;
+using SmartEnrol.Services.Constant;
 using SmartEnrol.Services.Helper;
 using SmartEnrol.Services.ViewModels.Student;
 
@@ -75,6 +77,7 @@ namespace SmartEnrol.API.Controllers
         /// SignupAccountModel
         /// </summary>
         [HttpPost("signup")]
+        [Authorize(Roles = ConstantEnum.Roles.STUDENT)]
         public async Task<IActionResult> AccountSignup([FromBody] AccountSignupModel account)
         {
             if (!ModelState.IsValid)
@@ -90,14 +93,13 @@ namespace SmartEnrol.API.Controllers
                 );
             }
 
-            var (resultString, submittedData, returnData) = await _accountService.AccountSignup(account);
-                return Ok(new
-                {
-                    result = resultString,
-                    submitData = submittedData,
-                    returnData = returnData
-                }
-                ); 
+            var (resultString, submittedData) = await _accountService.AccountSignup(account);
+            return Ok(new
+            {
+                result = resultString,
+                submitData = submittedData
+            }
+            );
         }
 
         /// <summary>
