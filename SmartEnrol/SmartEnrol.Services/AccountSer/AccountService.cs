@@ -135,7 +135,7 @@ namespace SmartEnrol.Services.AccountSer
             try
             {
                 await _unitOfWork.BeginTransactionAsync();
-                var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(acc.AccountId);
+                var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(int.Parse(acc.AccountId));
                 if (foundUser == null)
                     return null;
                 Account account = _mapper.Map<StudentAccountProfileModel, Account>(acc);
