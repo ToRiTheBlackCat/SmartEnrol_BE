@@ -17,51 +17,54 @@ public partial class SmartEnrolContext : DbContext
         : base(options)
     {
     }
-
+    //cũ
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AdmissionMethodOfMajor> AdmissionMethodOfMajors { get; set; }
 
     public virtual DbSet<AdmissionMethodOfUni> AdmissionMethodOfUnis { get; set; }
 
+    public virtual DbSet<Area> Areas { get; set; }
+
     public virtual DbSet<Characteristic> Characteristics { get; set; }
 
-    public virtual DbSet<CharacteristicOfField> CharacteristicOfFields { get; set; }
+    public virtual DbSet<CharacteristicOfMajor> CharacteristicOfMajors { get; set; }
 
     public virtual DbSet<CharacteristicOfStudent> CharacteristicOfStudents { get; set; }
-
-    public virtual DbSet<Field> Fields { get; set; }
-
-    public virtual DbSet<FieldOfUni> FieldOfUnis { get; set; }
 
     public virtual DbSet<Major> Majors { get; set; }
 
     public virtual DbSet<Recommendation> Recommendations { get; set; }
 
+    public virtual DbSet<RecommendationDetail> RecommendationDetails { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<UniMajor> UniMajors { get; set; }
+
     public virtual DbSet<University> Universities { get; set; }
+
+    public virtual DbSet<WishList> WishLists { get; set; }
 
     public virtual DbSet<WishListItem> WishListItems { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.AccountId).HasName("PK__Students__32C52B9905656C98");
-
             entity.ToTable("Account");
 
             entity.Property(e => e.AccountName).HasMaxLength(255);
-            entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.Email)
                 .IsRequired()
                 .HasMaxLength(255);
-            entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.Password)
                 .IsRequired()
                 .HasMaxLength(255);
+
+            entity.HasOne(d => d.Area).WithMany(p => p.Accounts)
+                .HasForeignKey(d => d.AreaId)
+                .HasConstraintName("FK_Account_Area");
 
             entity.HasOne(d => d.Role).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.RoleId)
@@ -71,44 +74,44 @@ public partial class SmartEnrolContext : DbContext
 
         modelBuilder.Entity<AdmissionMethodOfMajor>(entity =>
         {
-            entity.HasKey(e => e.AdmissionMethodsOfMajorId).HasName("PK__Admissio__5B13486D7CD69950");
+            entity.HasKey(e => e.AdmissionMethodsOfMajorId);
 
             entity.ToTable("AdmissionMethodOfMajor");
 
-            entity.Property(e => e.AdmissionMethodId).HasColumnName("AdmissionMethodID");
-
-            entity.HasOne(d => d.AdmissionMethod).WithMany(p => p.AdmissionMethodOfMajors)
-                .HasForeignKey(d => d.AdmissionMethodId)
+            entity.HasOne(d => d.AdmissionMethodOfUni).WithMany(p => p.AdmissionMethodOfMajors)
+                .HasForeignKey(d => d.AdmissionMethodOfUniId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Admission__Admis__4BAC3F29");
+                .HasConstraintName("FK_AdmissionMethodOfMajor_AdmissionMethodOfUni");
 
-            entity.HasOne(d => d.Major).WithMany(p => p.AdmissionMethodOfMajors)
-                .HasForeignKey(d => d.MajorId)
+            entity.HasOne(d => d.UniMajor).WithMany(p => p.AdmissionMethodOfMajors)
+                .HasForeignKey(d => d.UniMajorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Admission__Major__4AB81AF0");
+                .HasConstraintName("FK_AdmissionMethodOfMajor_UniMajor");
         });
 
         modelBuilder.Entity<AdmissionMethodOfUni>(entity =>
         {
-            entity.HasKey(e => e.AdmissionMethodId).HasName("PK__Admissio__8B797C8B821F30F1");
-
             entity.ToTable("AdmissionMethodOfUni");
 
-            entity.Property(e => e.AdmissionMethodId).HasColumnName("AdmissionMethodID");
-            entity.Property(e => e.MethodName)
-                .IsRequired()
-                .HasMaxLength(255);
+            entity.Property(e => e.MethodName).IsRequired();
 
             entity.HasOne(d => d.Uni).WithMany(p => p.AdmissionMethodOfUnis)
                 .HasForeignKey(d => d.UniId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Admission__UniId__47DBAE45");
+                .HasConstraintName("FK_AdmissionMethodOfUni_University");
+        });
+
+        modelBuilder.Entity<Area>(entity =>
+        {
+            entity.ToTable("Area");
+
+            entity.Property(e => e.AreaName)
+                .IsRequired()
+                .HasMaxLength(255);
         });
 
         modelBuilder.Entity<Characteristic>(entity =>
         {
-            entity.HasKey(e => e.CharacteristicId).HasName("PK__Characte__C0EA4DCFB7B76666");
-
             entity.ToTable("Characteristic");
 
             entity.Property(e => e.CharacteristicName)
@@ -116,111 +119,70 @@ public partial class SmartEnrolContext : DbContext
                 .HasMaxLength(255);
         });
 
-        modelBuilder.Entity<CharacteristicOfField>(entity =>
+        modelBuilder.Entity<CharacteristicOfMajor>(entity =>
         {
-            entity.HasKey(e => e.CharacteristicsOfFieldId).HasName("PK__Characte__09E4561146D264D7");
+            entity.ToTable("CharacteristicOfMajor");
 
-            entity.ToTable("CharacteristicOfField");
-
-            entity.Property(e => e.CharacteristicId).HasColumnName("CharacteristicID");
-            entity.Property(e => e.FieldId).HasColumnName("FieldID");
-
-            entity.HasOne(d => d.Characteristic).WithMany(p => p.CharacteristicOfFields)
+            entity.HasOne(d => d.Characteristic).WithMany(p => p.CharacteristicOfMajors)
                 .HasForeignKey(d => d.CharacteristicId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Character__Chara__4F7CD00D");
+                .HasConstraintName("FK_CharacteristicOfMajor_Characteristic");
 
-            entity.HasOne(d => d.Field).WithMany(p => p.CharacteristicOfFields)
-                .HasForeignKey(d => d.FieldId)
+            entity.HasOne(d => d.Major).WithMany(p => p.CharacteristicOfMajors)
+                .HasForeignKey(d => d.MajorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Character__Field__4E88ABD4");
+                .HasConstraintName("FK_CharacteristicOfMajor_Major");
         });
 
         modelBuilder.Entity<CharacteristicOfStudent>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Characte__3214EC07BAA554AB");
-
             entity.ToTable("CharacteristicOfStudent");
-
-            entity.Property(e => e.CharacteristicId).HasColumnName("CharacteristicID");
 
             entity.HasOne(d => d.Account).WithMany(p => p.CharacteristicOfStudents)
                 .HasForeignKey(d => d.AccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Character__Stude__5BE2A6F2");
+                .HasConstraintName("FK_CharacteristicOfStudent_Account");
 
             entity.HasOne(d => d.Characteristic).WithMany(p => p.CharacteristicOfStudents)
                 .HasForeignKey(d => d.CharacteristicId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Character__Chara__5AEE82B9");
-        });
-
-        modelBuilder.Entity<Field>(entity =>
-        {
-            entity.HasKey(e => e.FieldId).HasName("PK__Fields__C8B6FF07670422EA");
-
-            entity.ToTable("Field");
-
-            entity.Property(e => e.FieldName)
-                .IsRequired()
-                .HasMaxLength(255);
-        });
-
-        modelBuilder.Entity<FieldOfUni>(entity =>
-        {
-            entity.HasKey(e => e.FieldsOfUniId).HasName("PK__FieldsOf__CB695E283974CF64");
-
-            entity.ToTable("FieldOfUni");
-
-            entity.HasOne(d => d.Field).WithMany(p => p.FieldOfUnis)
-                .HasForeignKey(d => d.FieldId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__FieldsOfU__Field__4222D4EF");
-
-            entity.HasOne(d => d.University).WithMany(p => p.FieldOfUnis)
-                .HasForeignKey(d => d.UniversityId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__FieldsOfU__Unive__412EB0B6");
+                .HasConstraintName("FK_CharacteristicOfStudent_Characteristic");
         });
 
         modelBuilder.Entity<Major>(entity =>
         {
-            entity.HasKey(e => e.MajorId).HasName("PK__Majors__D5B8BF9140D30E55");
-
             entity.ToTable("Major");
 
-            entity.Property(e => e.FieldOfUniId).HasColumnName("FieldOfUniID");
-            entity.Property(e => e.Name)
+            entity.Property(e => e.MajorName)
                 .IsRequired()
                 .HasMaxLength(255);
-
-            entity.HasOne(d => d.FieldOfUni).WithMany(p => p.Majors)
-                .HasForeignKey(d => d.FieldOfUniId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Majors__FieldOfU__44FF419A");
         });
 
         modelBuilder.Entity<Recommendation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Recommen__3214EC0765872E47");
-
             entity.ToTable("Recommendation");
 
-            entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.MajorId).HasColumnName("MajorID");
-            entity.Property(e => e.Recommendation1).HasColumnName("Recommendation");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.Account).WithMany(p => p.Recommendations)
                 .HasForeignKey(d => d.AccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Recommend__Stude__534D60F1");
+                .HasConstraintName("FK_Recommendation_Account");
+        });
 
-            entity.HasOne(d => d.Major).WithMany(p => p.Recommendations)
-                .HasForeignKey(d => d.MajorId)
+        modelBuilder.Entity<RecommendationDetail>(entity =>
+        {
+            entity.ToTable("RecommendationDetail");
+
+            entity.HasOne(d => d.RecommendationNavigation).WithMany(p => p.RecommendationDetails)
+                .HasForeignKey(d => d.RecommendationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Recommend__Major__5441852A");
+                .HasConstraintName("FK_RecommendationDetail_Recommendation");
+
+            entity.HasOne(d => d.UniMajor).WithMany(p => p.RecommendationDetails)
+                .HasForeignKey(d => d.UniMajorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RecommendationDetail_UniMajor");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -233,41 +195,74 @@ public partial class SmartEnrolContext : DbContext
                 .IsFixedLength();
         });
 
+        modelBuilder.Entity<UniMajor>(entity =>
+        {
+            entity.ToTable("UniMajor");
+
+            entity.HasOne(d => d.Major).WithMany(p => p.UniMajors)
+                .HasForeignKey(d => d.MajorId)
+                .HasConstraintName("FK_UniMajor_Major");
+
+            entity.HasOne(d => d.Uni).WithMany(p => p.UniMajors)
+                .HasForeignKey(d => d.UniId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_UniMajor_University");
+        });
+
         modelBuilder.Entity<University>(entity =>
         {
-            entity.HasKey(e => e.UniversityId).HasName("PK__Universi__9F19E1BC0C5AAF4C");
+            entity.HasKey(e => e.UniId);
 
             entity.ToTable("University");
 
-            entity.Property(e => e.Code)
-                .IsRequired()
-                .HasMaxLength(50);
-            entity.Property(e => e.Email).HasMaxLength(255);
-            entity.Property(e => e.Location).HasMaxLength(255);
-            entity.Property(e => e.Phone).HasMaxLength(50);
-            entity.Property(e => e.UniversityName)
-                .IsRequired()
-                .HasMaxLength(255);
-            entity.Property(e => e.Website).HasMaxLength(255);
+            entity.Property(e => e.Email)
+                .HasMaxLength(255)
+                .IsFixedLength();
+            entity.Property(e => e.Phone)
+                .HasMaxLength(15)
+                .IsFixedLength();
+            entity.Property(e => e.UniCode).HasMaxLength(50);
+            entity.Property(e => e.UniName).IsRequired();
+            entity.Property(e => e.Website)
+                .HasMaxLength(255)
+                .IsFixedLength();
+
+            entity.HasOne(d => d.Area).WithMany(p => p.Universities)
+                .HasForeignKey(d => d.AreaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_University_Area");
+        });
+
+        modelBuilder.Entity<WishList>(entity =>
+        {
+            entity.ToTable("WishList");
+
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.WishLists)
+                .HasForeignKey(d => d.AccountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_WishList_Account");
         });
 
         modelBuilder.Entity<WishListItem>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__WishList__3214EC071B15C00A");
+            entity.HasKey(e => e.ItemId);
 
             entity.ToTable("WishListItem");
 
-            entity.Property(e => e.MajorId).HasColumnName("MajorID");
+            entity.HasOne(d => d.Uni).WithMany(p => p.WishListItems)
+                .HasForeignKey(d => d.UniId)
+                .HasConstraintName("FK_WishListItem_University");
 
-            entity.HasOne(d => d.Account).WithMany(p => p.WishListItems)
-                .HasForeignKey(d => d.AccountId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__WishListI__Stude__571DF1D5");
+            entity.HasOne(d => d.UniMajor).WithMany(p => p.WishListItems)
+                .HasForeignKey(d => d.UniMajorId)
+                .HasConstraintName("FK_WishListItem_UniMajor");
 
-            entity.HasOne(d => d.Major).WithMany(p => p.WishListItems)
-                .HasForeignKey(d => d.MajorId)
+            entity.HasOne(d => d.WishList).WithMany(p => p.WishListItems)
+                .HasForeignKey(d => d.WishListId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__WishListI__Major__5812160E");
+                .HasConstraintName("FK_WishListItem_WishList");
         });
 
         OnModelCreatingPartial(modelBuilder);

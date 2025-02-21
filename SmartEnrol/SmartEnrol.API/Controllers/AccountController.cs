@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.AccountSer;
+using SmartEnrol.Services.Constant;
 using SmartEnrol.Services.Helper;
 using SmartEnrol.Services.ViewModels.Student;
 
@@ -28,11 +31,11 @@ namespace SmartEnrol.API.Controllers
         public async Task<IActionResult> LoginWithEmailAndPassword([FromBody] LoginModel request)
         {
             //Check required fields
-            if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Password))
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             //Authenticate account
-            var (isAuthenticated,accountId, response) = await _accountService.Authenticate(request);
+            var (isAuthenticated, accountId, response) = await _accountService.Authenticate(request);
 
             return isAuthenticated
                 ? Ok(new
@@ -67,6 +70,58 @@ namespace SmartEnrol.API.Controllers
                     AccountId = accountId,
                     Token = response
                 });
+        }
+
+        /// <summary>
+        /// Signup Account
+        /// SignupAccountModel
+        /// </summary>
+        [HttpPost("signup")]
+        [Authorize(Roles = ConstantEnum.Roles.STUDENT)]
+        public async Task<IActionResult> AccountSignup([FromBody] AccountSignupModel account)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (account.Password != account.ConfirmPassword)
+            {
+                return Ok(new
+                {
+                    result = "Password doesn't match!",
+                    submitData = account
+                }
+                );
+            }
+
+            var (resultString, submittedData) = await _accountService.AccountSignup(account);
+            return Ok(new
+            {
+                result = resultString,
+                submitData = submittedData
+            }
+            );
+        }
+
+        /// <summary>
+        /// Update Account Profile
+        /// StudentAccountProfileModel
+        /// </summary>
+        [HttpPatch("update-profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] StudentAccountProfileModel model)
+        {
+            //Check required fields
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            //Check if account exist
+            var check = await _accountService.CheckIfExist(model.AccountId);
+            if (!check)
+                return NotFound("Account not found.");
+
+            var updatedAccount = await _accountService.UpdateUserProfile(model);
+
+            return updatedAccount != null
+                ? Ok(updatedAccount)
+                : BadRequest("Account not found.");
         }
     }
 }

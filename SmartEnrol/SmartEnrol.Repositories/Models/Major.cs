@@ -9,15 +9,9 @@ public partial class Major
 {
     public int MajorId { get; set; }
 
-    public string Name { get; set; }
+    public string MajorName { get; set; }
 
-    public int FieldOfUniId { get; set; }
+    public virtual ICollection<CharacteristicOfMajor> CharacteristicOfMajors { get; set; } = new List<CharacteristicOfMajor>();
 
-    public virtual ICollection<AdmissionMethodOfMajor> AdmissionMethodOfMajors { get; set; } = new List<AdmissionMethodOfMajor>();
-
-    public virtual FieldOfUni FieldOfUni { get; set; }
-
-    public virtual ICollection<Recommendation> Recommendations { get; set; } = new List<Recommendation>();
-
-    public virtual ICollection<WishListItem> WishListItems { get; set; } = new List<WishListItem>();
+    public virtual ICollection<UniMajor> UniMajors { get; set; } = new List<UniMajor>();
 }
