@@ -26,8 +26,8 @@ namespace SmartEnrol.API.Controllers
         /// Get Account detail by id
         /// Return acocunt
         /// </summary>
-        [HttpGet]
-        public async Task<IActionResult> GetAccountDetailById([FromQuery] int accountId)
+        [HttpGet("{accountId}")]
+        public async Task<IActionResult> GetAccountDetailById(int accountId)
         {
             //Check if account exist
             var account = await _accountService.GetAccountById(accountId);
