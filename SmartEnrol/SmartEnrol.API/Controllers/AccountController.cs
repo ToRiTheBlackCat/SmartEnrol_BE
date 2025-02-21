@@ -23,6 +23,30 @@ namespace SmartEnrol.API.Controllers
         }
 
         /// <summary>
+        /// Get Account detail by id
+        /// Return acocunt
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> GetAccountDetailById([FromQuery] int accountId)
+        {
+            //Check if account exist
+            var account = await _accountService.GetAccountById(accountId);
+            return account == null
+                ? NotFound(new
+                {
+                    Message = "Account not found with that id",
+                    AccountName = string.Empty,
+                    Email = string.Empty
+                })
+                : Ok(new
+                {
+                    Message = "Account found",
+                    account.AccountName,
+                    account.Email
+                });
+        }
+
+        /// <summary>
         /// Login account with email and password
         /// LoginModel
         /// Return isAuthenticated and token
