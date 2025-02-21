@@ -34,7 +34,7 @@ namespace SmartEnrol.Services.AccountSer
             _mapper = mapper;
         }
 
-        public async Task<(string,AccountSignupModel?)> AccountSignup(AccountSignupModel account)
+        public async Task<(string, AccountSignupModel?)> AccountSignup(AccountSignupModel account)
         {
             try
             {
@@ -74,11 +74,11 @@ namespace SmartEnrol.Services.AccountSer
                 };
 
                 var result = await _unitOfWork.AccountRepository
-                    .AddAsync(newUser); 
+                    .AddAsync(newUser);
                 await _unitOfWork.SaveChangesAsync();
 
                 // If database transaction fails
-                if(result == 0)
+                if (result == 0)
                     throw new Exception("Error creating account!");
 
                 await _unitOfWork.CommitTransactionAsync();
@@ -155,6 +155,16 @@ namespace SmartEnrol.Services.AccountSer
                 await _unitOfWork.RollbackTransactionAsync();
                 throw new Exception(ex.Message);
             }
+        }
+        public async Task<Account?> GetAccountById(int accountId)
+        {
+            var isExisted = await CheckIfExist(accountId);
+            if (!isExisted)
+                return null;
+
+            var foundAccount = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+            return foundAccount;
+
         }
     }
 }
