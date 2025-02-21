@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.AccountSer;
+using SmartEnrol.Services.Constant;
 using SmartEnrol.Services.Helper;
 using SmartEnrol.Services.ViewModels.Student;
 
@@ -18,6 +20,30 @@ namespace SmartEnrol.API.Controllers
         {
             _accountService = accountService;
             _googleLogin = googleLogin;
+        }
+
+        /// <summary>
+        /// Get Account detail by id
+        /// Return acocunt
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> GetAccountDetailById([FromQuery] int accountId)
+        {
+            //Check if account exist
+            var account = await _accountService.GetAccountById(accountId);
+            return account == null
+                ? NotFound(new
+                {
+                    Message = "Account not found with that id",
+                    AccountName = string.Empty,
+                    Email = string.Empty
+                })
+                : Ok(new
+                {
+                    Message = "Account found",
+                    account.AccountName,
+                    account.Email
+                });
         }
 
         /// <summary>
@@ -90,14 +116,13 @@ namespace SmartEnrol.API.Controllers
                 );
             }
 
-            var (resultString, submittedData, returnData) = await _accountService.AccountSignup(account);
-                return Ok(new
-                {
-                    result = resultString,
-                    submitData = submittedData,
-                    returnData = returnData
-                }
-                ); 
+            var (resultString, submittedData) = await _accountService.AccountSignup(account);
+            return Ok(new
+            {
+                result = resultString,
+                submitData = submittedData
+            }
+            );
         }
 
         /// <summary>
@@ -105,6 +130,7 @@ namespace SmartEnrol.API.Controllers
         /// StudentAccountProfileModel
         /// </summary>
         [HttpPatch("update-profile")]
+        [Authorize(Roles = ConstantEnum.Roles.STUDENT)]
         public async Task<IActionResult> UpdateProfile([FromBody] StudentAccountProfileModel model)
         {
             //Check required fields

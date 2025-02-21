@@ -20,7 +20,7 @@ namespace SmartEnrol.Repositories.Repositories
         {
             var foundAccount = await _dbSet
                   .FirstOrDefaultAsync(s => s.Email == email &&
-                                              s.Password == password);
+                                            s.Password == password);
             if (foundAccount == null)
             {
                 return null;
@@ -37,7 +37,14 @@ namespace SmartEnrol.Repositories.Repositories
 
         public async Task<Account?> GetAccountByEmail(string email)
         {
-            return await _dbSet.FirstOrDefaultAsync(s => s.Email == email);
+            var foundAccount = await _dbSet.FirstOrDefaultAsync(s => s.Email == email);
+            if (foundAccount == null)
+            {
+                return null;
+            }
+            var includedAccount = await GetAccountByIdWithIncludeAsync(foundAccount);
+
+            return includedAccount;
         }
         
         public async Task<Account?> GetAccountByAccountName(string accountName)

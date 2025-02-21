@@ -34,7 +34,7 @@ namespace SmartEnrol.Services.AccountSer
             _mapper = mapper;
         }
 
-        public async Task<(string,AccountSignupModel?,Account?)> AccountSignup(AccountSignupModel account)
+        public async Task<(string, AccountSignupModel?)> AccountSignup(AccountSignupModel account)
         {
             try
             {
@@ -51,15 +51,15 @@ namespace SmartEnrol.Services.AccountSer
                 if (existingUser != null)
                 {
                     if (existingUser.IsActive == true)
-                        return ("This email has an active account!", account, null);
-                    return ("This account is deactivated!", account, null);
+                        return ("This email has an active account!", account);
+                    return ("This account is deactivated!", account);
                 }
 
                 // Check username availability
                 var existingName = await _unitOfWork.AccountRepository.GetAccountByAccountName(account.AccountName);
 
                 if (existingName != null)
-                    return ("This username is taken!", account, null);
+                    return ("This username is taken!", account);
 
                 // Create account if all check passes
                 Account newUser = new Account()
@@ -68,23 +68,24 @@ namespace SmartEnrol.Services.AccountSer
                     Email = account.Email,
                     Password = account.Password,
                     RoleId = (int)ConstantEnum.RoleID.STUDENT,
+                    AreaId = 1,
                     CreatedDate = DateTime.UtcNow,
                     IsActive = true
                 };
 
                 var result = await _unitOfWork.AccountRepository
-                    .AddAsync(newUser); 
+                    .AddAsync(newUser);
                 await _unitOfWork.SaveChangesAsync();
 
                 // If database transaction fails
-                if(result == 0)
+                if (result == 0)
                     throw new Exception("Error creating account!");
 
                 await _unitOfWork.CommitTransactionAsync();
 
                 var user = await _unitOfWork.AccountRepository.GetAccountByEmail(account.Email);
 
-                return ("Account created successfully!", account, user);
+                return ("Account created successfully!", account);
             }
             catch (Exception ex)
             {
@@ -154,6 +155,16 @@ namespace SmartEnrol.Services.AccountSer
                 await _unitOfWork.RollbackTransactionAsync();
                 throw new Exception(ex.Message);
             }
+        }
+        public async Task<Account?> GetAccountById(int accountId)
+        {
+            var isExisted = await CheckIfExist(accountId);
+            if (!isExisted)
+                return null;
+
+            var foundAccount = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+            return foundAccount;
+
         }
     }
 }

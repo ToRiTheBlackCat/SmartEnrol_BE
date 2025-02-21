@@ -10,9 +10,10 @@ namespace SmartEnrol.Services.AccountSer
 {
     public interface IAccountService
     {
-        Task<(string,AccountSignupModel?,Account?)> AccountSignup(AccountSignupModel account);
+        Task<(string, AccountSignupModel?)> AccountSignup(AccountSignupModel account);
         Task<(bool, string, string)> Authenticate(LoginModel login);
         Task<Account?> UpdateUserProfile(StudentAccountProfileModel acc);
         Task<bool> CheckIfExist(int accountId);
+        Task<Account?> GetAccountById(int accountId);
     }
 }
