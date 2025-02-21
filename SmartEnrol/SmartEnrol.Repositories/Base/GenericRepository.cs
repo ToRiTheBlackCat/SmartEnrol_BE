@@ -102,13 +102,13 @@ namespace SmartEnrol.Repositories.Base
             _context.SaveChanges();
         }
 
-        public async Task<int> UpdatAsync(T item)
-        {
-            var tracker = _context.Attach(item);
-            tracker.State = EntityState.Modified;
-            return await _context.SaveChangesAsync();
+        //public async Task<int> UpdateAsyncReturnInt(T item)
+        //{
+        //    var tracker = _context.Attach(item);
+        //    tracker.State = EntityState.Modified;
+        //    return await _context.SaveChangesAsync();
 
-        }
+        //}
 
         public bool Delete(T item)
         {
