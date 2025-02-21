@@ -101,7 +101,6 @@ namespace SmartEnrol.API.Controllers
         /// SignupAccountModel
         /// </summary>
         [HttpPost("signup")]
-        [Authorize(Roles = ConstantEnum.Roles.STUDENT)]
         public async Task<IActionResult> AccountSignup([FromBody] AccountSignupModel account)
         {
             if (!ModelState.IsValid)
@@ -131,6 +130,7 @@ namespace SmartEnrol.API.Controllers
         /// StudentAccountProfileModel
         /// </summary>
         [HttpPatch("update-profile")]
+        [Authorize(Roles = ConstantEnum.Roles.STUDENT)]
         public async Task<IActionResult> UpdateProfile([FromBody] StudentAccountProfileModel model)
         {
             //Check required fields
