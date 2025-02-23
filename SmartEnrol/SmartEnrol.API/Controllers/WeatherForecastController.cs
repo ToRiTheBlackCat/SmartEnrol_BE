@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartEnrol.Services.AccountSer;
 using SmartEnrol.Services.Constant;
+using SmartEnrol.Services.Helper;
 
 namespace SmartEnrol.API.Controllers
 {
@@ -22,8 +24,18 @@ namespace SmartEnrol.API.Controllers
 
         [Authorize(Roles = ConstantEnum.Roles.STUDENT)]
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task<IEnumerable<WeatherForecast>> Get()
         {
+            var body = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            })
+            .ToArray().ToString();
+
+            await PushNotifyHelper.SendNotification("Notification from weather:", body ?? "Nothing to report.");
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
