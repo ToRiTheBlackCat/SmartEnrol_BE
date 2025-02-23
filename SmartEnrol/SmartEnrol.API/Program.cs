@@ -1,8 +1,12 @@
 using AutoMapper;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Repositories.Repositories;
@@ -10,6 +14,7 @@ using SmartEnrol.Services.AccountSer;
 using SmartEnrol.Services.Helper;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -112,6 +117,24 @@ builder.Services.AddAuthentication(options =>
         RoleClaimType = ClaimTypes.Role
     };
 });
+
+// Register Default Firebase app
+if (FirebaseApp.DefaultInstance == null)
+{
+    var settings = builder.Configuration
+        .GetSection("FirebaseJson")
+        .Get<Dictionary<string, string>>();
+    if (settings != null)
+    {
+        string json = JsonConvert.SerializeObject(settings);
+
+        var testApp = FirebaseApp.Create(new AppOptions()
+        {
+            Credential = GoogleCredential.FromJson(json),
+            ProjectId = "fir-pushnotification-f6ac4",
+        });
+    }
+}
 
 
 var app = builder.Build();
