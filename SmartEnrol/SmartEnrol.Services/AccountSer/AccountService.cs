@@ -1,6 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using FirebaseAdmin.Messaging;
+using Microsoft.Extensions.Configuration;
 using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
+using SmartEnrol.Services.Constant;
 using SmartEnrol.Services.Helper;
 using SmartEnrol.Services.ViewModels.Student;
 using System;
@@ -12,6 +16,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using SmartEnrol.Services.Constant;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using FirebaseAdmin.Messaging;
 
 namespace SmartEnrol.Services.AccountSer
 {
@@ -84,6 +91,9 @@ namespace SmartEnrol.Services.AccountSer
                 await _unitOfWork.CommitTransactionAsync();
 
                 var user = await _unitOfWork.AccountRepository.GetAccountByEmail(account.Email);
+
+                // Integrade Notification
+                await PushNotifyHelper.SendNotification("New User Registered", $"User {user!.AccountName} has registered");
 
                 return ("Account created successfully!", account);
             }
