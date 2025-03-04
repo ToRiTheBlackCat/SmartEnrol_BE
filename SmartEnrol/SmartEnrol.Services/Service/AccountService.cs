@@ -1,6 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using FirebaseAdmin.Messaging;
+using Microsoft.Extensions.Configuration;
 using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
+using SmartEnrol.Services.Constant;
 using SmartEnrol.Services.Helper;
 using SmartEnrol.Services.ViewModels.Student;
 using System;
@@ -12,8 +16,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using SmartEnrol.Services.Constant;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using FirebaseAdmin.Messaging;
 
-namespace SmartEnrol.Services.AccountSer
+namespace SmartEnrol.Services.Services
 {
 
     public class AccountService : IAccountService
@@ -85,6 +92,9 @@ namespace SmartEnrol.Services.AccountSer
 
                 var user = await _unitOfWork.AccountRepository.GetAccountByEmail(account.Email);
 
+                // Integrade Notification
+                await PushNotifyHelper.SendNotification("New User Registered", $"User {user!.AccountName} has registered");
+
                 return ("Account created successfully!", account);
             }
             catch (Exception ex)
@@ -135,7 +145,7 @@ namespace SmartEnrol.Services.AccountSer
             try
             {
                 await _unitOfWork.BeginTransactionAsync();
-                var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(acc.AccountId);
+                var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(int.Parse(acc.AccountId));
                 if (foundUser == null)
                     return null;
                 Account account = _mapper.Map<StudentAccountProfileModel, Account>(acc);
@@ -165,6 +175,11 @@ namespace SmartEnrol.Services.AccountSer
             var foundAccount = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
             return foundAccount;
 
+        }
+
+        public async Task<IEnumerable<Account?>> GetAccounts()
+        {
+            return await _unitOfWork.AccountRepository.GetAllAsync();
         }
     }
 }

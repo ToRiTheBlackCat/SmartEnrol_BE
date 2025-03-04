@@ -11,11 +11,13 @@ namespace SmartEnrol.Services.Helper
             CreateMap<Account, StudentAccountProfileModel>()
                 .ForMember(Account => Account.AccountId, opt => opt.MapFrom(StudentAccountProfileModel => StudentAccountProfileModel.AccountId))
                 .ForMember(Account => Account.AccountName, opt => opt.MapFrom(StudentAccountProfileModel => StudentAccountProfileModel.AccountName))
-                .ForMember(Account => Account.Email, opt => opt.MapFrom(StudentAccountProfileModel => StudentAccountProfileModel.Email));
+                .ForMember(Account => Account.Email, opt => opt.MapFrom(StudentAccountProfileModel => StudentAccountProfileModel.Email))
+                .ForMember(Account => Account.AreaId, opt => opt.MapFrom(StudentAccountProfileModel => StudentAccountProfileModel.AreaId));
             CreateMap<StudentAccountProfileModel, Account>()
                 .ForMember(StudentAccountProfileModel => StudentAccountProfileModel.AccountId, opt => opt.MapFrom(Account => Account.AccountId))
                 .ForMember(StudentAccountProfileModel => StudentAccountProfileModel.AccountName, opt => opt.MapFrom(Account => Account.AccountName))
-                .ForMember(StudentAccountProfileModel => StudentAccountProfileModel.Email, opt => opt.MapFrom(Account => Account.Email));
+                .ForMember(StudentAccountProfileModel => StudentAccountProfileModel.Email, opt => opt.MapFrom(Account => Account.Email))
+                .ForMember(StudentAccountProfileModel => StudentAccountProfileModel.AreaId, opt => opt.MapFrom(Account => Account.AreaId));
         }
     }
 }

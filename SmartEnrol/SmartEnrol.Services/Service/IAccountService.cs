@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartEnrol.Services.AccountSer
+namespace SmartEnrol.Services.Services
 {
     public interface IAccountService
     {
@@ -15,5 +15,6 @@ namespace SmartEnrol.Services.AccountSer
         Task<Account?> UpdateUserProfile(StudentAccountProfileModel acc);
         Task<bool> CheckIfExist(int accountId);
         Task<Account?> GetAccountById(int accountId);
+        Task<IEnumerable<Account?>> GetAccounts();
     }
 }
