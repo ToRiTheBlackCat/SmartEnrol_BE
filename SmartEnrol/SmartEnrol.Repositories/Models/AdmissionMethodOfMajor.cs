@@ -15,6 +15,8 @@ public partial class AdmissionMethodOfMajor
 
     public int? AdmissionTargets { get; set; }
 
+    public int? MajorScore { get; set; }
+
     public virtual AdmissionMethodOfUni AdmissionMethodOfUni { get; set; }
 
     public virtual UniMajor UniMajor { get; set; }
