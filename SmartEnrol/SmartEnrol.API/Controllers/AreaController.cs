@@ -15,13 +15,17 @@ namespace SmartEnrol.API.Controllers
             _serv = serv;
         }
 
-        [HttpGet("get")]
+		/// <summary>
+		/// Get all area
+		/// Return List of all area
+		/// </summary>
+		[HttpGet]
         public async Task<IActionResult> GetAreaList()
         {
             var result = await _serv.GetAreasAsync();
             // Shorthand if statement
-            return result == null ?
-                NotFound(new
+            return result == null 
+                ? NotFound(new
                 {
                     Message = "No Area found!"
                 })

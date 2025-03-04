@@ -24,11 +24,11 @@ namespace SmartEnrol.API.Controllers
 
         /// <summary>
         /// Get all account
+        /// Return List of all account
         /// </summary>
-        [HttpGet("get")]
+        [HttpGet]
         public async Task<IActionResult> GetAccountList()
         {
-            //Check if account exist
             var result = await _accountService.GetAccounts();
             return result == null
                 ? NotFound(new
