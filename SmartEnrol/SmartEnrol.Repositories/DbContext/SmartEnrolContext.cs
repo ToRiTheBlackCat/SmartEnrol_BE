@@ -17,7 +17,6 @@ public partial class SmartEnrolContext : DbContext
         : base(options)
     {
     }
-    //cũ
     public virtual DbSet<Account> Accounts { get; set; }
 
     public virtual DbSet<AdmissionMethodOfMajor> AdmissionMethodOfMajors { get; set; }
@@ -219,7 +218,7 @@ public partial class SmartEnrolContext : DbContext
                 .HasMaxLength(255)
                 .IsFixedLength();
             entity.Property(e => e.Phone)
-                .HasMaxLength(15)
+                .HasMaxLength(255)
                 .IsFixedLength();
             entity.Property(e => e.UniCode).HasMaxLength(50);
             entity.Property(e => e.UniName).IsRequired();
