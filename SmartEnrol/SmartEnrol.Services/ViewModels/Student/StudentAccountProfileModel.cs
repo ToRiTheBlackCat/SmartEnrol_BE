@@ -21,6 +21,8 @@ namespace SmartEnrol.Services.ViewModels.Student
 
         [Required]
         public required string Email { get; set; }
+
+        public int? AreaId { get; set; }
     }   
 
 }
