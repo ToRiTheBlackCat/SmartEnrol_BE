@@ -1,24 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
 ﻿using AutoMapper;
-using FirebaseAdmin.Messaging;
 using Microsoft.Extensions.Configuration;
 using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.Constant;
 using SmartEnrol.Services.Helper;
 using SmartEnrol.Services.ViewModels.Student;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using SmartEnrol.Services.Constant;
-using FirebaseAdmin;
-using Google.Apis.Auth.OAuth2;
-using FirebaseAdmin.Messaging;
 
 namespace SmartEnrol.Services.Services
 {
@@ -148,15 +134,19 @@ namespace SmartEnrol.Services.Services
                 var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(int.Parse(acc.AccountId));
                 if (foundUser == null)
                     return null;
+
                 Account account = _mapper.Map<StudentAccountProfileModel, Account>(acc);
                 account.Password = foundUser.Password;
                 account.IsActive = foundUser.IsActive;
                 account.RoleId = foundUser.RoleId;
                 account.CreatedDate = foundUser.CreatedDate;
+
                 var up = await _unitOfWork.AccountRepository.UpdateAsync(account);
                 await _unitOfWork.SaveChangesAsync();
+
                 if (up == null)
                     throw new Exception("Update user profile failed!");
+
                 await _unitOfWork.CommitTransactionAsync();
                 return up;
             }
@@ -166,6 +156,7 @@ namespace SmartEnrol.Services.Services
                 throw new Exception(ex.Message);
             }
         }
+
         public async Task<Account?> GetAccountById(int accountId)
         {
             var isExisted = await CheckIfExist(accountId);
@@ -174,7 +165,6 @@ namespace SmartEnrol.Services.Services
 
             var foundAccount = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
             return foundAccount;
-
         }
 
         public async Task<IEnumerable<Account?>> GetAccounts()

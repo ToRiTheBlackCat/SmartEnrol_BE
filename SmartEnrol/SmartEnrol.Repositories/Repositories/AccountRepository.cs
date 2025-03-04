@@ -46,7 +46,7 @@ namespace SmartEnrol.Repositories.Repositories
 
             return includedAccount;
         }
-        
+
         public async Task<Account?> GetAccountByAccountName(string accountName)
         {
             return await _dbSet.FirstOrDefaultAsync(s => s.AccountName == accountName);
