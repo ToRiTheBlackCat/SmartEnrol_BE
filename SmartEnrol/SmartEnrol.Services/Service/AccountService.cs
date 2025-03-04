@@ -20,7 +20,7 @@ using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using FirebaseAdmin.Messaging;
 
-namespace SmartEnrol.Services.AccountSer
+namespace SmartEnrol.Services.Services
 {
 
     public class AccountService : IAccountService
@@ -175,6 +175,11 @@ namespace SmartEnrol.Services.AccountSer
             var foundAccount = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
             return foundAccount;
 
+        }
+
+        public async Task<IEnumerable<Account?>> GetAccounts()
+        {
+            return await _unitOfWork.AccountRepository.GetAllAsync();
         }
     }
 }

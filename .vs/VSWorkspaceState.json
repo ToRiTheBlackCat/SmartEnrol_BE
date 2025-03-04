@@ -3,9 +3,11 @@
     "",
     "\\SmartEnrol",
     "\\SmartEnrol\\SmartEnrol.API",
+    "\\SmartEnrol\\SmartEnrol.API\\Controllers",
+    "\\SmartEnrol\\SmartEnrol.Repositories",
     "\\SmartEnrol\\SmartEnrol.Services",
     "\\SmartEnrol\\SmartEnrol.Services\\AccountSer"
   ],
-  "SelectedNode": "\\SmartEnrol\\SmartEnrol.sln",
+  "SelectedNode": "\\SmartEnrol\\SmartEnrol.API\\Controllers\\WeatherForecastController.cs",
   "PreviewInSolutionExplorer": false
 }

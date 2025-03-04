@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartEnrol.Repositories.Models;
-using SmartEnrol.Services.AccountSer;
 using SmartEnrol.Services.Constant;
 using SmartEnrol.Services.Helper;
+using SmartEnrol.Services.Services;
 using SmartEnrol.Services.ViewModels.Student;
 
 namespace SmartEnrol.API.Controllers
@@ -20,6 +20,22 @@ namespace SmartEnrol.API.Controllers
         {
             _accountService = accountService;
             _googleLogin = googleLogin;
+        }
+
+        /// <summary>
+        /// Get all account
+        /// </summary>
+        [HttpGet("get")]
+        public async Task<IActionResult> GetAccountList()
+        {
+            //Check if account exist
+            var result = await _accountService.GetAccounts();
+            return result == null
+                ? NotFound(new
+                {
+                    Message = "No Account found!"
+                })
+                : Ok(result);
         }
 
         /// <summary>

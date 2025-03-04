@@ -10,8 +10,8 @@ using Newtonsoft.Json;
 using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Repositories.Repositories;
-using SmartEnrol.Services.AccountSer;
 using SmartEnrol.Services.Helper;
+using SmartEnrol.Services.Services;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -79,6 +79,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Register for Services
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAreaService, AreaService>();
 
 
 // Add AutoMapper service
@@ -92,6 +93,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 
 // Register for Repository
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAreaRepository, AreaRepository>();
 
 
 
