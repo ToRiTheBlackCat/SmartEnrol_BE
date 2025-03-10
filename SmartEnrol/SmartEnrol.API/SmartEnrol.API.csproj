@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SmartEnrol.Infrastructure\SmartEnrol.Infrastructure.csproj" />
     <ProjectReference Include="..\SmartEnrol.Services\SmartEnrol.Services.csproj">
       <Private>True</Private>
     </ProjectReference>

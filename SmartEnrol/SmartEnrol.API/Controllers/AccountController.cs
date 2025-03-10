@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmartEnrol.Infrastructure;
+using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.Constant;
 using SmartEnrol.Services.Helper;
 using SmartEnrol.Services.Services;
@@ -13,11 +16,14 @@ namespace SmartEnrol.API.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly GoogleLogin _googleLogin;
+        private readonly QueryConstruction _query;
         public AccountController(IAccountService accountService,
-                                 GoogleLogin googleLogin)
+                                 GoogleLogin googleLogin,
+                                 QueryConstruction queryConstruction)
         {
             _accountService = accountService;
             _googleLogin = googleLogin;
+            _query = queryConstruction;
         }
 
         /// <summary>
@@ -35,6 +41,7 @@ namespace SmartEnrol.API.Controllers
                 })
                 : Ok(result);
         }
+
 
         /// <summary>
         /// Get Account detail by id
@@ -60,6 +67,15 @@ namespace SmartEnrol.API.Controllers
                 });
         }
 
+        [HttpPost("test-gemini")]
+        public async Task<IActionResult> Query(string input)
+        {
+            var sqlQuery = await _query.GenerateQueryString(input);
+            return Ok(new
+            {
+                SqlOutput = sqlQuery
+            });
+        }
         /// <summary>
         /// Login account with email and password
         /// LoginModel
