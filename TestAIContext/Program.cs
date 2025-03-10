@@ -12,7 +12,6 @@
 //    {
 //        static async Task Main(string[] args)
 //        {
-//            // Replace this with your Hugging Face API key
 //            
 
 //            //Hugging Face model endpoint(DistilBERT for question answering)
