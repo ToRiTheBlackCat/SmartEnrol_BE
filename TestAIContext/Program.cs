@@ -13,7 +13,7 @@
 //        static async Task Main(string[] args)
 //        {
 //            // Replace this with your Hugging Face API key
-//            string api = "";
+//            
 
 //            //Hugging Face model endpoint(DistilBERT for question answering)
 //            string modelId = "deepset/roberta-large-squad2"; // Fine-tuned for question answering
