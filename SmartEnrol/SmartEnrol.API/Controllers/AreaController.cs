@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SmartEnrol.Services.Services;
 
 namespace SmartEnrol.API.Controllers
@@ -15,16 +14,16 @@ namespace SmartEnrol.API.Controllers
             _serv = serv;
         }
 
-		/// <summary>
-		/// Get all area
-		/// Return List of all area
-		/// </summary>
-		[HttpGet]
+        /// <summary>
+        /// Get all area
+        /// Return List of all area
+        /// </summary>
+        [HttpGet]
         public async Task<IActionResult> GetAreaList()
         {
             var result = await _serv.GetAreasAsync();
             // Shorthand if statement
-            return result == null 
+            return result == null
                 ? NotFound(new
                 {
                     Message = "No Area found!"
