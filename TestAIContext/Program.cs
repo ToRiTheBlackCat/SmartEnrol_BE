@@ -13,7 +13,7 @@ namespace TestAIContext
         static async Task Main(string[] args)
         {
             // Replace this with your Hugging Face API key
-            string apiKey = "";
+            string api = "";
 
             //Hugging Face model endpoint(DistilBERT for question answering)
             string modelId = "deepset/roberta-large-squad2"; // Fine-tuned for question answering
@@ -21,7 +21,7 @@ namespace TestAIContext
 
             //Initialize HttpClient
             using HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {api}");
 
             //Predefined context
             string context = "FPT University is the leading university that  teach technology in Viet Nam, located in Ho Chi Minh City. The weather like today is hot and windy. Your name is AI1, you are created by A. The university mainly teaches software-engineering, computer-science, international business.";
