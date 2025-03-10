@@ -1,6 +1,9 @@
 using AutoMapper;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -8,10 +11,11 @@ using SmartEnrol.Infrastructure;
 using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Repositories.Repositories;
-using SmartEnrol.Services.AccountSer;
 using SmartEnrol.Services.Helper;
+using SmartEnrol.Services.Services;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,6 +81,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Register for Services
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAreaService, AreaService>();
 
 
 // Add AutoMapper service
@@ -90,6 +95,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 
 // Register for Repository
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAreaRepository, AreaRepository>();
 
 
 
@@ -115,6 +121,24 @@ builder.Services.AddAuthentication(options =>
         RoleClaimType = ClaimTypes.Role
     };
 });
+
+// Register Default Firebase app
+if (FirebaseApp.DefaultInstance == null)
+{
+    var settings = builder.Configuration
+        .GetSection("FirebaseJson")
+        .Get<Dictionary<string, string>>();
+    if (settings != null)
+    {
+        string json = JsonConvert.SerializeObject(settings);
+
+        var testApp = FirebaseApp.Create(new AppOptions()
+        {
+            Credential = GoogleCredential.FromJson(json),
+            ProjectId = "fir-pushnotification-f6ac4",
+        });
+    }
+}
 
 
 var app = builder.Build();

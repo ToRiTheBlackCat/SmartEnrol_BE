@@ -15,12 +15,13 @@ namespace SmartEnrol.Repositories.Base
         private IDbContextTransaction? _transaction;
 
         public IAccountRepository AccountRepository { get; }
+        public IAreaRepository AreaRepository { get; }
 
-
-        public UnitOfWork(SmartEnrolContext context, IAccountRepository accountRepsitory)
+        public UnitOfWork(SmartEnrolContext context, IAccountRepository accountRepository, IAreaRepository areaRepository)
         {
             _context = context;
-            AccountRepository = accountRepsitory;
+            AccountRepository = accountRepository;
+            AreaRepository = areaRepository;
         }
 
         public async Task BeginTransactionAsync()
