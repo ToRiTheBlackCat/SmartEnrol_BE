@@ -13,7 +13,7 @@ namespace TestAIContext
         static async Task Main(string[] args)
         {
             // Replace this with your Hugging Face API key
-            string apiKey = "T";
+            string apiKey = "";
 
             //Hugging Face model endpoint(DistilBERT for question answering)
             string modelId = "deepset/roberta-large-squad2"; // Fine-tuned for question answering
@@ -81,7 +81,5 @@ namespace TestAIContext
     }
 
 
-    //MinhTriKey
-    // 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
 }
 
