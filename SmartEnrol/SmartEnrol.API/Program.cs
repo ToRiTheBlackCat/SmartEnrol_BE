@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using SmartEnrol.Infrastructure;
 using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
