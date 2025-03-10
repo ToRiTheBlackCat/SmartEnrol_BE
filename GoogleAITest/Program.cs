@@ -2,7 +2,7 @@
 using GenerativeAI.Types;
 
 
-var apiKey = "AIzaSyDfSjIDXSm0wBG6ne8qAbXBDNyJNQttf18";
+var apiKey = "";
 var googleAI = new GoogleAi(apiKey);
 var model = googleAI.CreateGenerativeModel("models/gemini-2.0-flash");
 var config = new GenerationConfig()
