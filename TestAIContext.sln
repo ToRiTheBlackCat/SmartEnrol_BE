@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAIContext", "TestAIContext\TestAIContext.csproj", "{40BE784B-777D-4DF9-9974-EA3D3CBE5B02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{BA23F72D-EF9B-4727-8704-D047E384B1F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleAITest", "GoogleAITest\GoogleAITest.csproj", "{AB47358E-6785-4A33-B1E8-C099C1F4AF28}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{40BE784B-777D-4DF9-9974-EA3D3CBE5B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40BE784B-777D-4DF9-9974-EA3D3CBE5B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40BE784B-777D-4DF9-9974-EA3D3CBE5B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40BE784B-777D-4DF9-9974-EA3D3CBE5B02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA23F72D-EF9B-4727-8704-D047E384B1F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA23F72D-EF9B-4727-8704-D047E384B1F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA23F72D-EF9B-4727-8704-D047E384B1F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA23F72D-EF9B-4727-8704-D047E384B1F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB47358E-6785-4A33-B1E8-C099C1F4AF28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB47358E-6785-4A33-B1E8-C099C1F4AF28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB47358E-6785-4A33-B1E8-C099C1F4AF28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB47358E-6785-4A33-B1E8-C099C1F4AF28}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

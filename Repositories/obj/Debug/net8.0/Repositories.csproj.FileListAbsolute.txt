@@ -1,0 +1,14 @@
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\bin\Debug\net8.0\Repositories.deps.json
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\bin\Debug\net8.0\Repositories.runtimeconfig.json
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\bin\Debug\net8.0\Repositories.dll
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\bin\Debug\net8.0\Repositories.pdb
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\obj\Debug\net8.0\Repositories.csproj.AssemblyReference.cache
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\obj\Debug\net8.0\Repositories.GeneratedMSBuildEditorConfig.editorconfig
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\obj\Debug\net8.0\Repositories.AssemblyInfoInputs.cache
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\obj\Debug\net8.0\Repositories.AssemblyInfo.cs
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\obj\Debug\net8.0\Repositories.csproj.CoreCompileInputs.cache
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\obj\Debug\net8.0\Repositories.dll
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\obj\Debug\net8.0\refint\Repositories.dll
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\obj\Debug\net8.0\Repositories.pdb
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\obj\Debug\net8.0\Repositories.genruntimeconfig.cache
+C:\FPT\2025\SWD\Test\TestAIContext\Repositories\obj\Debug\net8.0\ref\Repositories.dll

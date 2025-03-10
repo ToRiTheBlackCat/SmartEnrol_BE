@@ -1,0 +1,123 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\FPT\\2025\\SWD\\Test\\TestAIContext\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{AB47358E-6785-4A33-B1E8-C099C1F4AF28}|GoogleAITest\\GoogleAITest.csproj|c:\\fpt\\2025\\swd\\test\\testaicontext\\googleaitest\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB47358E-6785-4A33-B1E8-C099C1F4AF28}|GoogleAITest\\GoogleAITest.csproj|solutionrelative:googleaitest\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB47358E-6785-4A33-B1E8-C099C1F4AF28}|GoogleAITest\\GoogleAITest.csproj|c:\\fpt\\2025\\swd\\test\\testaicontext\\googleaitest\\googleaitest.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{AB47358E-6785-4A33-B1E8-C099C1F4AF28}|GoogleAITest\\GoogleAITest.csproj|solutionrelative:googleaitest\\googleaitest.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{40BE784B-777D-4DF9-9974-EA3D3CBE5B02}|TestAIContext\\TestAIContext.csproj|c:\\fpt\\2025\\swd\\test\\testaicontext\\testaicontext\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{40BE784B-777D-4DF9-9974-EA3D3CBE5B02}|TestAIContext\\TestAIContext.csproj|solutionrelative:testaicontext\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA23F72D-EF9B-4727-8704-D047E384B1F1}|Repositories\\Repositories.csproj|c:\\fpt\\2025\\swd\\test\\testaicontext\\repositories\\repositories\\universitoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA23F72D-EF9B-4727-8704-D047E384B1F1}|Repositories\\Repositories.csproj|solutionrelative:repositories\\repositories\\universitoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA23F72D-EF9B-4727-8704-D047E384B1F1}|Repositories\\Repositories.csproj|c:\\fpt\\2025\\swd\\test\\testaicontext\\repositories\\models\\smartenroldbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA23F72D-EF9B-4727-8704-D047E384B1F1}|Repositories\\Repositories.csproj|solutionrelative:repositories\\models\\smartenroldbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 274,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GoogleAITest.csproj",
+              "DocumentMoniker": "C:\\FPT\\2025\\SWD\\Test\\TestAIContext\\GoogleAITest\\GoogleAITest.csproj",
+              "RelativeDocumentMoniker": "GoogleAITest\\GoogleAITest.csproj",
+              "ToolTip": "C:\\FPT\\2025\\SWD\\Test\\TestAIContext\\GoogleAITest\\GoogleAITest.csproj",
+              "RelativeToolTip": "GoogleAITest\\GoogleAITest.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-02-28T07:32:18.514Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\FPT\\2025\\SWD\\Test\\TestAIContext\\GoogleAITest\\Program.cs",
+              "RelativeDocumentMoniker": "GoogleAITest\\Program.cs",
+              "ToolTip": "C:\\FPT\\2025\\SWD\\Test\\TestAIContext\\GoogleAITest\\Program.cs",
+              "RelativeToolTip": "GoogleAITest\\Program.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAswA0AAAAlAgAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T06:19:52.821Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\FPT\\2025\\SWD\\Test\\TestAIContext\\TestAIContext\\Program.cs",
+              "RelativeDocumentMoniker": "TestAIContext\\Program.cs",
+              "ToolTip": "C:\\FPT\\2025\\SWD\\Test\\TestAIContext\\TestAIContext\\Program.cs",
+              "RelativeToolTip": "TestAIContext\\Program.cs",
+              "ViewState": "AgIAADsAAAAAAAAAAAAQwBkAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-21T05:44:38.789Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UniversitoryRepository.cs",
+              "DocumentMoniker": "C:\\FPT\\2025\\SWD\\Test\\TestAIContext\\Repositories\\Repositories\\UniversitoryRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\Repositories\\UniversitoryRepository.cs",
+              "ToolTip": "C:\\FPT\\2025\\SWD\\Test\\TestAIContext\\Repositories\\Repositories\\UniversitoryRepository.cs",
+              "RelativeToolTip": "Repositories\\Repositories\\UniversitoryRepository.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAQwBYAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-21T05:32:08.357Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SmartEnrolDBContext.cs",
+              "DocumentMoniker": "C:\\FPT\\2025\\SWD\\Test\\TestAIContext\\Repositories\\Models\\SmartEnrolDBContext.cs",
+              "RelativeDocumentMoniker": "Repositories\\Models\\SmartEnrolDBContext.cs",
+              "ToolTip": "C:\\FPT\\2025\\SWD\\Test\\TestAIContext\\Repositories\\Models\\SmartEnrolDBContext.cs",
+              "RelativeToolTip": "Repositories\\Models\\SmartEnrolDBContext.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAA7wAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-21T05:30:59.344Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 126,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
