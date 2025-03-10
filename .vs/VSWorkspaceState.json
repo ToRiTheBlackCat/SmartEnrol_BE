@@ -3,9 +3,11 @@
     "",
     "\\SmartEnrol",
     "\\SmartEnrol\\SmartEnrol.API",
-    "\\SmartEnrol\\SmartEnrol.Services",
-    "\\SmartEnrol\\SmartEnrol.Services\\AccountSer"
+    "\\SmartEnrol\\SmartEnrol.API\\Controllers",
+    "\\SmartEnrol\\SmartEnrol.Repositories",
+    "\\SmartEnrol\\SmartEnrol.Repositories\\Models",
+    "\\SmartEnrol\\SmartEnrol.Services"
   ],
-  "SelectedNode": "\\SmartEnrol\\SmartEnrol.sln",
+  "SelectedNode": "\\SmartEnrol\\SmartEnrol.API\\Controllers\\AreaController.cs",
   "PreviewInSolutionExplorer": false
 }

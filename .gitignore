@@ -289,3 +289,4 @@ __pycache__/
 *.xsd.cs
 
 /SmartEnrol/SmartEnrol.API/appsettings.Development.json
+/SmartEnrol/SmartEnrol.API/appsettings.json
