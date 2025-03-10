@@ -43,22 +43,6 @@ namespace SmartEnrol.API.Controllers
         }
 
         /// <summary>
-        /// Get all account
-        /// Return List of all account
-        /// </summary>
-        [HttpGet]
-        public async Task<IActionResult> GetAccountList()
-        {
-            var result = await _accountService.GetAccounts();
-            return result == null
-                ? NotFound(new
-                {
-                    Message = "No Account found!"
-                })
-                : Ok(result);
-        }
-
-        /// <summary>
         /// Get Account detail by id
         /// Return acocunt
         /// </summary>
