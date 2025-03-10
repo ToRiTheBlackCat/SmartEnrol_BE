@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using SmartEnrol.Infrastructure;
 using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Repositories.Repositories;
@@ -71,6 +72,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<AuthenticationJWT>();
 builder.Services.AddScoped<GoogleLogin>();
 builder.Services.AddScoped<MappingProfile>();
+builder.Services.AddScoped<QueryConstruction>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 
