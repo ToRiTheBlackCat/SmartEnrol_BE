@@ -46,7 +46,8 @@ namespace SmartEnrol.Infrastructure
 /*Step back*/       "Given a specific user question about one or more of these products, write a more generic question that needs to be answered in order to answer the specific question. " +
 /*Subquery*/        //"Return at least 3 and at most 5 options to choose from" +
 /*Subquery*/        //"Format the rewritten queries as follow: Rewritten query options 1; Rewritten query options 2; Rewritten query options nth" +
-					"Do not include any explanation or generic response, only output the queries in the format above." +
+					"Do not include any explanation or generic response, only output the queries in the format above. " +
+					"If the question is in another language, translate it into English as best as you can while still keeping to all the above guidelines. " +
 					"Here is the question: ";
 
 			var requestBodyRewrite = new
