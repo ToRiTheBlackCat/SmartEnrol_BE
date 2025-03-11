@@ -42,6 +42,7 @@ namespace SmartEnrol.API.Controllers
                 : Ok(result);
         }
 
+
         /// <summary>
         /// Get Account detail by id
         /// Return acocunt

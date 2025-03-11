@@ -122,8 +122,8 @@ namespace SmartEnrol.Infrastructure
                     foreach (var adMethodOfMajor in adMethodOfUni.AdmissionMethodOfMajors)
                     {
                         contextString += $"{adMethodOfMajor.AdmissionTargets} and this admission method has the major score that student must have to apply to this school: {adMethodOfMajor.MajorScore}. And these requirements are apply for this major: ";
-                            contextString += $"{adMethodOfMajor.UniMajor.Major.MajorName}.";
-                       
+                        contextString += $"{adMethodOfMajor.UniMajor.Major.MajorName}.";
+
                     }
                 }
             }
