@@ -49,7 +49,7 @@ namespace SmartEnrol.Infrastructure
 					"Return either [GENERAL] if you determined the context to not be related to the dataset. " +
 					"or [SPECIALIZED] if you determined the context to be related to the dataset. " +
 					//"Provide between 1-2 explaination for why that prompt is routed to the path that you have chosen for it." +
-					"Format the response as follow: [GENERAL] or [SPECIALIZED]" +
+					"Format the response as follow: general or special" +
 					"Do not include any generic response or explanation, only output the queries in the format above. " +
 					$"Here is the document: {documentRouting}. " +
 					"And here is the question: ";
