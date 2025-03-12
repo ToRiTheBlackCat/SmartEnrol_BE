@@ -46,10 +46,10 @@ namespace SmartEnrol.Infrastructure
 					"4. Try not to deviate too far from the user's input's original intent. " +
 					"5. Don't overanalyze the context or any terms or phrases of the original question. " +
 					"Your goal is to determine either the question is related to the provided documents or the question is not related to the provided documents. " +
-					"Return either [GENERAL] if you determined the context to not be related to the dataset. " +
-					"or [SPECIALIZED] if you determined the context to be related to the dataset. " +
-					//"Provide between 1-2 explaination for why that prompt is routed to the path that you have chosen for it." +
 					"Format the response as follow: general or special" +
+					"Return either general if you determined the context to not be related to the dataset. " +
+					"or special if you determined the context to be related to the dataset. " +
+					//"Provide between 1-2 explaination for why that prompt is routed to the path that you have chosen for it." +
 					"Do not include any generic response or explanation, only output the queries in the format above. " +
 					$"Here is the document: {documentRouting}. " +
 					"And here is the question: ";
