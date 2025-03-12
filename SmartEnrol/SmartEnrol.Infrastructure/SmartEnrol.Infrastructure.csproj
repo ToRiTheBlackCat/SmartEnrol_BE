@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="FilesContainer\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SmartEnrol.Repositories\SmartEnrol.Repositories.csproj" />
   </ItemGroup>
 
