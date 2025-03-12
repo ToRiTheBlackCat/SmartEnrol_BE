@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text;
 using SmartEnrol.Repositories.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace SmartEnrol.Infrastructure
 {
@@ -32,9 +33,24 @@ namespace SmartEnrol.Infrastructure
 
             using HttpClient client = new HttpClient();
 
+            var context = "";
+            string Unipattern = @"\b(trường|major|ngành|phương thức|tuyển sinh|khoa|uni|university|chuyên ngành|methods|faculty|department)\b";
+            string CharPttenrn = @"\b(tính cách|sở thích|habbit|hobby|phù hợp ngành|tính cách ngành)\b";
 
 
-            var context = GenerateUniMajorAndAdmissionMethods() + "This is a reference for some universities that have some admission methods of that university and among that methods will be apply to some major throuhgt admission method of major and that will reference to the unimajor which contains all the major that university educate and you need to look throught Major to know what exactly that major name";
+            //Switch case input
+            if (Regex.IsMatch(input, Unipattern, RegexOptions.IgnoreCase))
+            {
+                context += GenerateUniMajorAndAdmissionMethods() + "This is a reference for some universities that have some admission methods of that university and among that methods will be apply to some major throuhgt admission method of major and that will reference to the unimajor which contains all the major that university educate and you need to look throught Major to know what exactly that major name";
+            }
+            else if (Regex.IsMatch(input, CharPttenrn, RegexOptions.IgnoreCase))
+            {
+                context += GenerateCharecteristicContext() + "This is a reference for which majors should you recommend based on given characteristic, recommend the top 5 major based on the user input(the major have to have the characteristics of the user)";
+            }
+
+
+
+             
 
 
             var prompts = ".Your name is SmartEnrol and you were created by TriNHM, you are created to become a consultant agent that help give advice about admission method of universities in VietName but if the user chat anything that out of your scopes, you can answer it with your knowledge and if user continure to asking please provide a continuously answer for them until they start a new conversation. Just make the shortest and clearest answer; Here is the input of the user: ";
@@ -77,33 +93,6 @@ namespace SmartEnrol.Infrastructure
 
         }
 
-        private async Task<string> ReadScriptFromFileAsync()
-        {
-            try
-            {
-                var models = context.Model;
-                var entityNames = models.GetEntityTypes().Select(e => e.Name).ToList();
-                if (entityNames.Count == 0)
-                {
-                    return "Error: No tables found!";
-                }
-
-                return string.Join("\n", entityNames);
-
-                //string filePath = "..\\SmartEnrol.Infrastructure\\DBSmartEnrol.sql";
-
-                //if (!File.Exists(filePath))
-                //{
-                //    return "Error: File not found!";
-                //}
-
-                //return await File.ReadAllTextAsync(filePath);
-            }
-            catch (Exception ex)
-            {
-                return $"Error: {ex.Message}";
-            }
-        }
 
         private string GenerateUniMajorAndAdmissionMethods()
         {

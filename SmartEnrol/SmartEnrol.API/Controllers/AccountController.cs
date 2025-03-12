@@ -66,16 +66,6 @@ namespace SmartEnrol.API.Controllers
                     account.Email
                 });
         }
-
-        [HttpPost("test-gemini")]
-        public async Task<IActionResult> Query(string input)
-        {
-            var sqlQuery = await _query.GenerateQueryString(input);
-            return Ok(new
-            {
-                SqlOutput = sqlQuery
-            });
-        }
         /// <summary>
         /// Login account with email and password
         /// LoginModel

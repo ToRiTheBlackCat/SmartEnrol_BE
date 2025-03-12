@@ -15,8 +15,8 @@ namespace SmartEnrol.API.Controllers
             _service = service;
             _query = query;
         }
-        [HttpPost("test-google-gemini-2")]
-        public async Task<IActionResult> GetQuery(string inputQuery)
+        [HttpPost]
+        public async Task<IActionResult> Chat(string inputQuery)
         {
             var data = await _query.GenerateQueryString(inputQuery);
             var response = await _service.GenerateResponse(inputQuery, data);
