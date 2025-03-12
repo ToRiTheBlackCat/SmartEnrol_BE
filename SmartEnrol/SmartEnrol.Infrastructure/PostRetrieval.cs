@@ -38,7 +38,7 @@ namespace SmartEnrol.Infrastructure
             var aiModel = googleAi.CreateGenerativeModel(GoogleAIModels.Gemini2Flash);
             var config = new GenerationConfig()
             {
-                MaxOutputTokens = 400,
+                MaxOutputTokens = 800,
                 Temperature = 0.5,
             };
             //var urlPath = _configuration["Gemini:ApiUrl"];
