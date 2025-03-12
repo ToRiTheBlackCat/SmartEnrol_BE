@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text;
 using SmartEnrol.Repositories.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartEnrol.Infrastructure
 {
@@ -31,27 +32,12 @@ namespace SmartEnrol.Infrastructure
 
             using HttpClient client = new HttpClient();
 
-            var sqlScriptTxt = await ReadScriptFromFileAsync();
-            sqlScriptTxt += "This is my DbContext class for my SQL Server database. I will explain its structure carefully so that you can understand it clearly: " +
-                            "University contains information about universities. " +
-                            "UniMajor contains the majors that universities offer. " +
-                            "Major includes all majors officially provided by the government in Vietnam. " +
-                            "AdmissionMethodOfMajor contains the admission methods applicable to those majors. " +
-                            "AdmissionMethodOfUni contains all the admission methods that universities use in a given year. " +
-                            "Area represents the cities or provinces where university students are located. " +
-                            "CharacteristicOfMajor lists the characteristics that are suitable for each major. " +
-                            "Characteristic is a collection of characteristic names. " +
-                            "CharacteristicOfStudent is used when a student logs in and provides their characteristics, hobbies, or interests. " +
-                            "Based on this input, the system determines which characteristics match them. " +
-                            "Other tables are available for reference, and you can read them to understand more details. " +
-                            "Caution: Do not include entities or fields that do not exist in my DbContext. " +
-                            "All data in my database is in Vietnamese, but the field names are in English. " +
-                            "For fields related to names (e.g., major name, method name, university name, etc.), use a 'contains' comparison rather than an exact match when performing queries. " +
-                            "Before providing a final response, scan and compare your output with my DbContext. If there are any inaccuracies, update your answer accordingly.";
 
-			//sqlScriptTxt += "This is the script of my Sql Server Database. I will explain carefully for you to understand: Table University will contain the information of universities. Table UniMajor will contains the majors that university is teach; The table Major is all the majors of the government in VietNam; The AdmissionMethodOfMajor will contains the admission method that apply for that major; Table AdmissionMethodOfUni will contain all the admission method that university have in that year; Table area is the city or province that students of universities are located; Table CharacteristicOfMajor are all the characteristics that suitable for that major; Table Characteristic is the list of characteristic name; Table CharacteristicOfStudent is when student login if they give their characteristic or hobby or what they like base on that to specify which characteristic are they; Others tables you can read to know. Caution that you cannot provide the table or field that not exist in my script and all the data in my Database is VietNamese but all fiels are English and with any fields that about name like major name, method name, university name just use contain not need exactly equal when compare. To be sure after give me an answer please reread that to compare with my script if not correct please update that";
 
-			var prompts = ".Your name is SmartEnrol and you were created by TriNHM, you are created to become a consultant agent that help give advice about admission method of universities in VietName but if the user chat anything that out of your scopes, you can answer it with your knowledge and if user continure to asking please provide a continuously answer for them until they start a new conversation. You need to read carefully the SQL Server script and informations that I provided before then you will receive the user input, then convert it into a SQL Server query that strictly related with my scripts for me to query data later. You will not to use all the tables just base on the question to find out the most main table then join with other just related to the user input, do not join any tables that not contains in the input. Just make the shortest and clearest answer; no need to explain your response. After create response please look throught again the DbContext to check if somethings that not correct please update it for me. You can only create one time response so please give me the most correct answer, you can deep thinking before answer take times to handle that. Here is the input of the user: ";
+            var context = GenerateUniMajorAndAdmissionMethods() + "This is a reference for some universities that have some admission methods of that university and among that methods will be apply to some major throuhgt admission method of major and that will reference to the unimajor which contains all the major that university educate and you need to look throught Major to know what exactly that major name";
+
+
+            var prompts = ".Your name is SmartEnrol and you were created by TriNHM, you are created to become a consultant agent that help give advice about admission method of universities in VietName but if the user chat anything that out of your scopes, you can answer it with your knowledge and if user continure to asking please provide a continuously answer for them until they start a new conversation. Just make the shortest and clearest answer; Here is the input of the user: ";
 
             var requestBody = new
             {
@@ -62,7 +48,7 @@ namespace SmartEnrol.Infrastructure
                     role = "user",
                     parts = new[]
                     {
-                        new { text = sqlScriptTxt + prompts + input }
+                        new { text = context + prompts + input }
                     }
                 }
             }
@@ -118,5 +104,71 @@ namespace SmartEnrol.Infrastructure
                 return $"Error: {ex.Message}";
             }
         }
+
+        private string GenerateUniMajorAndAdmissionMethods()
+        {
+            var universities = context.Universities.Include(x => x.AdmissionMethodOfUnis)
+                                                   .ThenInclude(x => x.AdmissionMethodOfMajors)
+                                                   .ThenInclude(x => x.UniMajor)
+                                                   .ThenInclude(x => x.Major);
+
+            var contextString = "";
+            foreach (var uni in universities)
+            {
+                contextString += $"{uni.UniName} has some admission methods like: ";
+                foreach (var adMethodOfUni in uni.AdmissionMethodOfUnis)
+                {
+                    contextString += $"{adMethodOfUni.MethodName} and this admission method has admission target ";
+                    foreach (var adMethodOfMajor in adMethodOfUni.AdmissionMethodOfMajors)
+                    {
+                        contextString += $"{adMethodOfMajor.AdmissionTargets} and this admission method has the major score that student must have to apply to this school: {adMethodOfMajor.MajorScore}. And these requirements are apply for this major: ";
+                        contextString += $"{adMethodOfMajor.UniMajor.Major.MajorName}.";
+
+                    }
+                }
+            }
+
+            return contextString;
+        }
+        private string GenerateCharecteristicContext()
+        {
+
+            var majors = context.Majors.Include(x => x.CharacteristicOfMajors).ThenInclude(x => x.Characteristic);
+
+            var contextString = "";
+
+            foreach (var major in majors)
+            {
+                contextString += $"{major.MajorName} includes characteristics like";
+                foreach (var characterOfMajor in major.CharacteristicOfMajors)
+                {
+                    var character = characterOfMajor.Characteristic;
+                    contextString += $" {character.CharacteristicName}, ";
+                }
+
+                if (major.CharacteristicOfMajors.Count > 0)
+                {
+                    contextString = contextString.Substring(0, contextString.Length - 2) + ". ";
+                }
+                else
+                {
+                    contextString += " None .";
+                }
+            }
+
+            return contextString;
+        }
     }
 }
+
+
+
+
+
+
+//var sqlScriptTxt = await ReadScriptFromFileAsync();
+//sqlScriptTxt += "This is my DbContext class of my Sql Server Database. I will explain carefully for you to understand: University will contain the information of universities. UniMajor will contains the majors that universities teach; Major is all the majors that provided by the government in VietNam; The AdmissionMethodOfMajor will contains the admission methods that apply for that majors; AdmissionMethodOfUni will contain all the admission methods that universities have in that year; Area is the cities or provinces that students of universities are located; CharacteristicOfMajor are all the characteristics that suitable for that majors; Characteristic is the list of characteristic name;  CharacteristicOfStudent is when student login if they give their characteristic or hobby or what they like base on that to specify which characteristic are they; Others tables you can read to know. Caution that you cannot provide the Entities or fields of Entities that not exist in my DbContext and all the data in my Database is VietNamese but all fields are in English but with any fields that about name like major name, method name, university name,... just use contain not need exactly equal when compare. To be sure after give me an answer please scan that to compare with my DbContext if not correct please update that.";
+
+//sqlScriptTxt += "This is the script of my Sql Server Database. I will explain carefully for you to understand: Table University will contain the information of universities. Table UniMajor will contains the majors that university is teach; The table Major is all the majors of the government in VietNam; The AdmissionMethodOfMajor will contains the admission method that apply for that major; Table AdmissionMethodOfUni will contain all the admission method that university have in that year; Table area is the city or province that students of universities are located; Table CharacteristicOfMajor are all the characteristics that suitable for that major; Table Characteristic is the list of characteristic name; Table CharacteristicOfStudent is when student login if they give their characteristic or hobby or what they like base on that to specify which characteristic are they; Others tables you can read to know. Caution that you cannot provide the table or field that not exist in my script and all the data in my Database is VietNamese but all fiels are English and with any fields that about name like major name, method name, university name just use contain not need exactly equal when compare. To be sure after give me an answer please reread that to compare with my script if not correct please update that";
+
+//var prompts = ".Your name is SmartEnrol and you were created by TriNHM, you are created to become a consultant agent that help give advice about admission method of universities in VietName but if the user chat anything that out of your scopes, you can answer it with your knowledge and if user continure to asking please provide a continuously answer for them until they start a new conversation. You need to read carefully the SQL Server script and informations that I provided before then you will receive the user input, then convert it into a SQL Server query that strictly related with my scripts for me to query data later. You will not to use all the tables just base on the question to find out the most main table then join with other just related to the user input, do not join any tables that not contains in the input. Just make the shortest and clearest answer; no need to explain your response. After create response please look throught again the DbContext to check if somethings that not correct please update it for me. You can only create one time response so please give me the most correct answer, you can deep thinking before answer take times to handle that. Here is the input of the user: ";
