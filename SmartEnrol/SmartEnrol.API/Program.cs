@@ -73,6 +73,8 @@ builder.Services.AddScoped<AuthenticationJWT>();
 builder.Services.AddScoped<GoogleLogin>();
 builder.Services.AddScoped<MappingProfile>();
 builder.Services.AddScoped<QueryConstruction>();
+builder.Services.AddScoped<QueryRewrite>();
+builder.Services.AddScoped<QueryRouting>();
 builder.Services.AddScoped<PostRetrieval>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
