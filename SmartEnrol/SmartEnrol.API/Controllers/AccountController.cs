@@ -55,13 +55,15 @@ namespace SmartEnrol.API.Controllers
             return account == null
                 ? NotFound(new
                 {
-                    message = "Account not found with that id",
-                    account,
+                    Message = "Account not found with that id",
+                    AccountName = string.Empty,
+                    Email = string.Empty
                 })
                 : Ok(new
                 {
-                    message = "Account found",
-                    account
+                    Message = "Account found",
+                    account.AccountName,
+                    account.Email
                 });
         }
         /// <summary>

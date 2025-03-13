@@ -10,20 +10,22 @@ namespace SmartEnrol.Infrastructure
     public class QueryConstruction
     {
         private readonly IConfiguration _configuration;
+
         SmartEnrolContext context;
         public QueryConstruction(IConfiguration configuration, SmartEnrolContext context)
         {
             _configuration = configuration;
             this.context = context;
+
         }
-        public async Task<string> GenerateQueryString(string inputQuery, string queryRouted)
+        public async Task<string> GenerateQueryString(string inputQuery)
         {
-            var outputQuery = await CallGeminiApi(inputQuery, queryRouted);
+            var outputQuery = await CallGeminiApi(inputQuery);
 
             return outputQuery;
         }
 
-        private async Task<string> CallGeminiApi(string input, string queryRouted)
+        private async Task<string> CallGeminiApi(string input)
         {
             var urlPath = _configuration["Gemini:ApiUrl"];
             var apiKey = _configuration["Gemini:ApiKey"];
@@ -35,25 +37,23 @@ namespace SmartEnrol.Infrastructure
             string Unipattern = @"\b(trường|major|ngành|phương thức|tuyển sinh|khoa|uni|university|chuyên ngành|methods|faculty|department)\b";
             string CharPttenrn = @"\b(tính cách|sở thích|habbit|hobby|phù hợp ngành|tính cách ngành)\b";
 
-            if (queryRouted.Contains("special"))
-            {
-                //Switch case input
-                if (Regex.IsMatch(input, Unipattern, RegexOptions.IgnoreCase))
-                {
-                    context += GenerateUniMajorAndAdmissionMethods() + "This is a reference for some universities that have some admission methods of that university and among that methods will be apply to some major throuhgt admission method of major and that will reference to the unimajor which contains all the major that university educate and you need to look throught Major to know what exactly that major name";
-                }
-                else if (Regex.IsMatch(input, CharPttenrn, RegexOptions.IgnoreCase))
-                {
-                    context += GenerateCharecteristicContext() + "This is a reference for which majors should you recommend based on given characteristic, recommend the top 5 major based on the user input(the major have to have the characteristics of the user)";
-                }
-            }
-            else if (queryRouted.Contains("general"))
-            {
-                context += "this question is out of your scope because it not realated to your role as a admission consultant.";
-            }
-            var prompts = "Your mission is to receive user input and the revelant data about user input. If you receive the question out of your scope then just response None  -. If the question is in your scope then response with the data. You must answer all in VietNamese base on the data you received . And here is the user input: ";
 
-            //var prompts = ".Your name is SmartEnrol, you are created to become a consultant agent that help give advice about admission method of universities in VietNam but if the user chat anything that out of your scopes or request for more information about universities, majors,..., you can answer it with your knowledge and if user continure to asking please provide a continuously answer for them until they start a new conversation.Help them answer their question just make the shortest and clearest answer. Here is the input of the user: ";
+            //Switch case input
+            if (Regex.IsMatch(input, Unipattern, RegexOptions.IgnoreCase))
+            {
+                context += GenerateUniMajorAndAdmissionMethods() + "This is a reference for some universities that have some admission methods of that university and among that methods will be apply to some major throuhgt admission method of major and that will reference to the unimajor which contains all the major that university educate and you need to look throught Major to know what exactly that major name";
+            }
+            else if (Regex.IsMatch(input, CharPttenrn, RegexOptions.IgnoreCase))
+            {
+                context += GenerateCharecteristicContext() + "This is a reference for which majors should you recommend based on given characteristic, recommend the top 5 major based on the user input(the major have to have the characteristics of the user)";
+            }
+
+
+
+             
+
+
+            var prompts = ".Your name is SmartEnrol and you were created by TriNHM, you are created to become a consultant agent that help give advice about admission method of universities in VietName but if the user chat anything that out of your scopes, you can answer it with your knowledge and if user continure to asking please provide a continuously answer for them until they start a new conversation. Just make the shortest and clearest answer; Here is the input of the user: ";
 
             var requestBody = new
             {

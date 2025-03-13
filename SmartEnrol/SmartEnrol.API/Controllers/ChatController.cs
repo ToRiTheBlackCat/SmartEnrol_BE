@@ -7,18 +7,37 @@ namespace SmartEnrol.API.Controllers
     [ApiController]
     public class ChatController : Controller
     {
-        private readonly IChatService _chatService;
+        private readonly PostRetrieval _service;
+        private readonly QueryConstruction _query;
 
-        public ChatController(IChatService chatService)
-        {
-            _chatService = chatService;
-        }
+		private readonly QueryRewrite _qRewrite;
+		private readonly QueryRouting _qRoute;
 
-        [HttpPost]
-        public async Task<IActionResult> Chat(string userInput)
+		public ChatController(PostRetrieval service, QueryConstruction query, QueryRewrite qRewrite, QueryRouting qRoute)
+		{
+			_service = service;
+			_query = query;
+			_qRewrite = qRewrite;
+			_qRoute = qRoute;
+		}
+
+		[HttpPost("test-google-gemini-2")]
+        public async Task<IActionResult> GetQuery(string inputQuery)
         {
-            string response = await _chatService.GenerateResponse(userInput);
+            var data = await _query.GenerateQueryString(inputQuery);
+            var response = await _service.GenerateResponse(inputQuery, data);
             return Ok(response);
         }
-    }
+
+		[HttpPost("test-routing-rewrite")]
+		public async Task<IActionResult> RewriteRerouteInput(string input)
+		{
+			var rewritten = await _qRewrite.CallGeminiApi(input);
+			var result = await _qRoute.CallGeminiApi(rewritten);
+			return Ok(new
+			{
+				routing = result
+			});
+		}
+	}
 }

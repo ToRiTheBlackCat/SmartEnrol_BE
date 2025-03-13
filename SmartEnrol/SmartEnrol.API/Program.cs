@@ -85,7 +85,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 // Register for Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAreaService, AreaService>();
-builder.Services.AddScoped<IChatService,ChatService>();
+
 
 // Add AutoMapper service
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
