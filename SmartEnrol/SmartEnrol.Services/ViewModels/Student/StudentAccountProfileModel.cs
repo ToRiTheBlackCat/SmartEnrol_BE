@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SmartEnrol.Repositories.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartEnrol.Services.ViewModels.Student
 {
@@ -14,6 +15,9 @@ namespace SmartEnrol.Services.ViewModels.Student
         public required string Email { get; set; }
 
         public int? AreaId { get; set; }
+
+        public string? AreaName { get; set; }
+
     }
 
 }
