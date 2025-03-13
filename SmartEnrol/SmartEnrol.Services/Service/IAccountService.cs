@@ -9,7 +9,7 @@ namespace SmartEnrol.Services.Services
         Task<(bool, string, string)> Authenticate(LoginModel login);
         Task<StudentAccountProfileModel> UpdateUserProfile(StudentAccountProfileModel acc);
         Task<bool> CheckIfExist(int accountId);
-        Task<Account?> GetAccountById(int accountId);
+        Task<StudentAccountProfileModel?> GetAccountById(int accountId);
         Task<IEnumerable<Account?>> GetAccounts();
         Task<List<Account>> GetAccountsByMonth(int month);
     }

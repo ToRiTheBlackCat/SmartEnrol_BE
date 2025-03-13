@@ -160,14 +160,20 @@ namespace SmartEnrol.Services.Services
             }
         }
 
-        public async Task<Account?> GetAccountById(int accountId)
+        public async Task<StudentAccountProfileModel?> GetAccountById(int accountId)
         {
             var isExisted = await CheckIfExist(accountId);
             if (!isExisted)
                 return null;
 
-            var foundAccount = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
-            return foundAccount;
+            var foundAccount = await _unitOfWork.AccountRepository.GetByIdWithIncludeAsync(accountId, "AccountId", acc => acc.Area);
+            if (foundAccount == null)
+                return null;
+
+            var mappedAccount = _mapper.Map<Account, StudentAccountProfileModel>(foundAccount);
+            mappedAccount.AreaName = foundAccount.Area.AreaName;
+
+            return mappedAccount;
         }
 
         public async Task<IEnumerable<Account?>> GetAccounts()
