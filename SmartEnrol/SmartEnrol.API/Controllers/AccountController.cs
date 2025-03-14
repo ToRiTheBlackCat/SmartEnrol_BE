@@ -157,7 +157,7 @@ namespace SmartEnrol.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             //Check if account exist
-            var check = await _accountService.CheckIfExist(int.Parse(model.AccountId));
+            var check = await _accountService.CheckIfExist(model.AccountId);
             if (!check)
                 return NotFound("Account not found.");
 
@@ -166,6 +166,21 @@ namespace SmartEnrol.API.Controllers
             return updatedAccount != null
                 ? Ok(updatedAccount)
                 : BadRequest("Account not found.");
+        }
+
+        /// <summary>
+        /// get accounts by month
+        /// </summary>
+        [HttpGet("get-month/{month}")]
+        public async Task<IActionResult> GetAccountsByMonth(int month)
+        {
+            var result = await _accountService.GetAccountsByMonth(month);
+            return result == null
+                ? NotFound(new
+                {
+                    Message = "No Account found!"
+                })
+                : Ok(result);
         }
     }
 }

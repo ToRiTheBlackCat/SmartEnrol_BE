@@ -51,5 +51,10 @@ namespace SmartEnrol.Repositories.Repositories
         {
             return await _dbSet.FirstOrDefaultAsync(s => s.AccountName == accountName);
         }
+
+        public async Task<List<Account>> GetAccountsByMonth(int month)
+        {
+            return await _dbSet.Where(s => s.CreatedDate.Month == month).ToListAsync();
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace SmartEnrol.Services.ViewModels.Student
     public class StudentAccountProfileModel
     {
         [Required]
-        public required string AccountId { get; set; }
+        public required int AccountId { get; set; }
 
         [Required]
         public required string AccountName { get; set; }
@@ -14,6 +14,8 @@ namespace SmartEnrol.Services.ViewModels.Student
         public required string Email { get; set; }
 
         public int? AreaId { get; set; }
+
+        public string AreaName { get; set; }
     }
 
 }

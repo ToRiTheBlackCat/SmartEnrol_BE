@@ -8,5 +8,6 @@ namespace SmartEnrol.Repositories.Repositories
         Task<Account?> GetAccountByEmailAndPasswordAsync(string email, string password);
         Task<Account?> GetAccountByEmail(string email);
         Task<Account?> GetAccountByAccountName(string accountName);
+        Task<List<Account>> GetAccountsByMonth(int month);
     }
 }
