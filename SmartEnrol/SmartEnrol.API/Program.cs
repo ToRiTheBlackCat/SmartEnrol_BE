@@ -73,6 +73,9 @@ builder.Services.AddScoped<AuthenticationJWT>();
 builder.Services.AddScoped<GoogleLogin>();
 builder.Services.AddScoped<MappingProfile>();
 builder.Services.AddScoped<QueryConstruction>();
+builder.Services.AddScoped<QueryRewrite>();
+builder.Services.AddScoped<QueryRouting>();
+builder.Services.AddScoped<PostRetrieval>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 
@@ -82,7 +85,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 // Register for Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAreaService, AreaService>();
-
+builder.Services.AddScoped<IChatService,ChatService>();
 
 // Add AutoMapper service
 builder.Services.AddAutoMapper(typeof(Program).Assembly);

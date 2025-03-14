@@ -124,14 +124,14 @@ namespace SmartEnrol.Services.Services
             return true;
         }
 
-        public async Task<Account?> UpdateUserProfile(StudentAccountProfileModel acc)
+        public async Task<StudentAccountProfileModel> UpdateUserProfile(StudentAccountProfileModel acc)
         {
             if (acc == null)
                 return null;
             try
             {
                 await _unitOfWork.BeginTransactionAsync();
-                var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(int.Parse(acc.AccountId));
+                var foundUser = await _unitOfWork.AccountRepository.GetByIdAsync(acc.AccountId);
                 if (foundUser == null)
                     return null;
 
@@ -148,7 +148,10 @@ namespace SmartEnrol.Services.Services
                     throw new Exception("Update user profile failed!");
 
                 await _unitOfWork.CommitTransactionAsync();
-                return up;
+                StudentAccountProfileModel uped = _mapper.Map<Account, StudentAccountProfileModel>(up);
+                var area = await _unitOfWork.AreaRepository.GetByIdAsync((int)up.AreaId);
+                uped.AreaName = area.AreaName;
+                return uped;
             }
             catch (Exception ex)
             {
@@ -157,19 +160,32 @@ namespace SmartEnrol.Services.Services
             }
         }
 
-        public async Task<Account?> GetAccountById(int accountId)
+        public async Task<StudentAccountProfileModel?> GetAccountById(int accountId)
         {
             var isExisted = await CheckIfExist(accountId);
             if (!isExisted)
                 return null;
 
-            var foundAccount = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
-            return foundAccount;
+            var foundAccount = await _unitOfWork.AccountRepository.GetByIdWithIncludeAsync(accountId, "AccountId", acc => acc.Area);
+            if (foundAccount == null)
+                return null;
+
+            var mappedAccount = _mapper.Map<Account, StudentAccountProfileModel>(foundAccount);
+            mappedAccount.AreaName = foundAccount.Area.AreaName;
+
+            return mappedAccount;
         }
 
         public async Task<IEnumerable<Account?>> GetAccounts()
         {
             return await _unitOfWork.AccountRepository.GetAllAsync();
+        }
+
+        public async Task<List<Account>> GetAccountsByMonth(int month)
+        {
+            if (month >= 1 && month <= 12)
+                return await _unitOfWork.AccountRepository.GetAccountsByMonth(month);
+            else return new List<Account>();
         }
     }
 }

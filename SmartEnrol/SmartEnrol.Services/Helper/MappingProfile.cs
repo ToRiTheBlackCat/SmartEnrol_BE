@@ -2,22 +2,22 @@
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.ViewModels.Student;
 
-namespace SmartEnrol.Services.Helper
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile() 
-        {
-            CreateMap<Account, StudentAccountProfileModel>()
-                .ForMember(Account => Account.AccountId, opt => opt.MapFrom(StudentAccountProfileModel => StudentAccountProfileModel.AccountId))
-                .ForMember(Account => Account.AccountName, opt => opt.MapFrom(StudentAccountProfileModel => StudentAccountProfileModel.AccountName))
-                .ForMember(Account => Account.Email, opt => opt.MapFrom(StudentAccountProfileModel => StudentAccountProfileModel.Email))
-                .ForMember(Account => Account.AreaId, opt => opt.MapFrom(StudentAccountProfileModel => StudentAccountProfileModel.AreaId));
-            CreateMap<StudentAccountProfileModel, Account>()
-                .ForMember(StudentAccountProfileModel => StudentAccountProfileModel.AccountId, opt => opt.MapFrom(Account => Account.AccountId))
-                .ForMember(StudentAccountProfileModel => StudentAccountProfileModel.AccountName, opt => opt.MapFrom(Account => Account.AccountName))
-                .ForMember(StudentAccountProfileModel => StudentAccountProfileModel.Email, opt => opt.MapFrom(Account => Account.Email))
-                .ForMember(StudentAccountProfileModel => StudentAccountProfileModel.AreaId, opt => opt.MapFrom(Account => Account.AreaId));
-        }
+        CreateMap<Account, StudentAccountProfileModel>()
+            .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.AccountId)) // Ensure type compatibility
+            .ForMember(dest => dest.AccountName, opt => opt.MapFrom(src => src.AccountName))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.AreaId, opt => opt.MapFrom(src => src.AreaId))
+            .ForMember(dest => dest.AreaName, opt => opt.MapFrom(src => src.Area != null ? src.Area.AreaName : null)); // Handle potential null Area
+
+        CreateMap<StudentAccountProfileModel, Account>()
+            .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.AccountId)) // Convert back to int
+            .ForMember(dest => dest.AccountName, opt => opt.MapFrom(src => src.AccountName))
+            .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+            .ForMember(dest => dest.AreaId, opt => opt.MapFrom(src => src.AreaId))
+            .ForMember(dest => dest.Area, opt => opt.Ignore()); // Prevent accidental overwriting, as Area is a navigation property
     }
 }

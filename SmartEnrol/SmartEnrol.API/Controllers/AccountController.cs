@@ -55,26 +55,14 @@ namespace SmartEnrol.API.Controllers
             return account == null
                 ? NotFound(new
                 {
-                    Message = "Account not found with that id",
-                    AccountName = string.Empty,
-                    Email = string.Empty
+                    message = "Account not found with that id",
+                    account,
                 })
                 : Ok(new
                 {
-                    Message = "Account found",
-                    account.AccountName,
-                    account.Email
+                    message = "Account found",
+                    account
                 });
-        }
-
-        [HttpPost("test-gemini")]
-        public async Task<IActionResult> Query(string input)
-        {
-            var sqlQuery = await _query.GenerateQueryString(input);
-            return Ok(new
-            {
-                SqlOutput = sqlQuery
-            });
         }
         /// <summary>
         /// Login account with email and password
@@ -167,7 +155,7 @@ namespace SmartEnrol.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             //Check if account exist
-            var check = await _accountService.CheckIfExist(int.Parse(model.AccountId));
+            var check = await _accountService.CheckIfExist(model.AccountId);
             if (!check)
                 return NotFound("Account not found.");
 
@@ -176,6 +164,21 @@ namespace SmartEnrol.API.Controllers
             return updatedAccount != null
                 ? Ok(updatedAccount)
                 : BadRequest("Account not found.");
+        }
+
+        /// <summary>
+        /// get accounts by month
+        /// </summary>
+        [HttpGet("get-month/{month}")]
+        public async Task<IActionResult> GetAccountsByMonth(int month)
+        {
+            var result = await _accountService.GetAccountsByMonth(month);
+            return result == null
+                ? NotFound(new
+                {
+                    Message = "No Account found!"
+                })
+                : Ok(result);
         }
     }
 }

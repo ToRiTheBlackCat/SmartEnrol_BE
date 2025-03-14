@@ -32,7 +32,8 @@ namespace SmartEnrol.Repositories.Repositories
         private async Task<Account?> GetAccountByIdWithIncludeAsync(Account account)
         {
             return await GetByIdWithIncludeAsync(account.AccountId, "AccountId", x => x.WishLists,
-                                                                                 x => x.Role);
+                                                                                 x => x.Role,
+                                                                                 x => x.Area);
         }
 
         public async Task<Account?> GetAccountByEmail(string email)
@@ -50,6 +51,11 @@ namespace SmartEnrol.Repositories.Repositories
         public async Task<Account?> GetAccountByAccountName(string accountName)
         {
             return await _dbSet.FirstOrDefaultAsync(s => s.AccountName == accountName);
+        }
+
+        public async Task<List<Account>> GetAccountsByMonth(int month)
+        {
+            return await _dbSet.Where(s => s.CreatedDate.Month == month).ToListAsync();
         }
     }
 }
