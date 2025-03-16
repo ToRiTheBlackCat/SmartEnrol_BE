@@ -9,5 +9,7 @@ namespace SmartEnrol.Repositories.Repositories
         Task<Account?> GetAccountByEmail(string email);
         Task<Account?> GetAccountByAccountName(string accountName);
         Task<List<Account>> GetAccountsByMonth(int month);
+        Task<(IEnumerable<Account?> Accounts, int totalCounts)> GetAllAccountsAsync(int pageSize, int pageNumber);
+        Task<(IEnumerable<Account?> Accounts, int totalCounts)> GetAccountsByNameAsync(string? name, int pageSize, int pageNumber);
     }
 }

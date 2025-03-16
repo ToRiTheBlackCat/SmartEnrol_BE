@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.Constant;
@@ -176,16 +177,28 @@ namespace SmartEnrol.Services.Services
             return mappedAccount;
         }
 
-        public async Task<IEnumerable<Account?>> GetAccounts()
-        {
-            return await _unitOfWork.AccountRepository.GetAllAsync();
-        }
-
         public async Task<List<Account>> GetAccountsByMonth(int month)
         {
             if (month >= 1 && month <= 12)
                 return await _unitOfWork.AccountRepository.GetAccountsByMonth(month);
             else return new List<Account>();
+        }
+
+        public async Task<(IEnumerable<Account?> Accounts, int totalCounts)> GetAccounts(string? name, bool sortByNewestDate, int pageSize, int pageNumber)
+        {
+            (IEnumerable<Account?> Accounts, int totalCounts) result;
+            if (name.IsNullOrEmpty())
+                result = await _unitOfWork.AccountRepository.GetAllAccountsAsync(pageSize, pageNumber);
+            else
+                result = await _unitOfWork.AccountRepository.GetAccountsByNameAsync(name, pageSize, pageNumber);
+            if(result.Accounts != null)
+            {
+                if (sortByNewestDate)
+                    return (result.Accounts.OrderByDescending(a => a.CreatedDate), result.totalCounts);
+                else
+                    return result;
+            }
+            return (null, 0);
         }
     }
 }

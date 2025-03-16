@@ -31,15 +31,26 @@ namespace SmartEnrol.API.Controllers
         /// Return List of all account
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetAccountList()
+        public async Task<IActionResult> GetAccountList(
+            string? name,
+            bool sortByNewestDate = false,
+            int pageSize = 10,
+            int pageNumber = 1
+            )
         {
-            var result = await _accountService.GetAccounts();
-            return result == null
+            var result = await _accountService.GetAccounts(name, sortByNewestDate, pageSize, pageNumber);
+            return result.Accounts == null
                 ? NotFound(new
                 {
                     Message = "No Account found!"
                 })
-                : Ok(result);
+                : Ok(new
+                {
+                    TotalCounts = result.totalCounts,
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    Courses = result.Accounts
+                });
         }
 
 
