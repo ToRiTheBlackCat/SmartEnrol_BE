@@ -13,15 +13,12 @@ namespace SmartEnrol.Infrastructure
 	{
 		private readonly IConfiguration _configuration;
 
-		SmartEnrolContext context;
-
-		public QueryRouting(IConfiguration configuration, SmartEnrolContext context)
+		public QueryRouting(IConfiguration configuration)
 		{
 			_configuration = configuration;
-			this.context = context;
 		}
 
-		public async Task<string> CallGeminiApi(string input)
+		public async Task<string> Route(string input)
 		{
 			var urlPath = _configuration["Gemini:ApiUrl"];
 			var apiKey = _configuration["Gemini:ApiKey"];
