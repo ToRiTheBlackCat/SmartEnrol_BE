@@ -30,7 +30,7 @@ namespace SmartEnrol.API.Controllers
         /// Get all account
         /// Return List of all account
         /// </summary>
-        [HttpGet]
+        [HttpGet("paged")]
         public async Task<IActionResult> GetAccountList(
             string? name,
             bool sortByNewestDate = false,
@@ -49,8 +49,24 @@ namespace SmartEnrol.API.Controllers
                     TotalCounts = result.totalCounts,
                     PageNumber = pageNumber,
                     PageSize = pageSize,
-                    Courses = result.Accounts
+                    Accounts = result.Accounts
                 });
+        }
+        
+        /// <summary>
+        /// Get all account
+        /// Return List of all account
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> GetAccountListNoPaging()
+        {
+            var result = await _accountService.GetAccountsAsync();
+            return result == null
+                ? NotFound(new
+                {
+                    Message = "No Account found!"
+                })
+                : Ok(result);
         }
 
 
