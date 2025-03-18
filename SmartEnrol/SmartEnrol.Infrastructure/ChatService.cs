@@ -25,7 +25,11 @@
         {
             string queryTranslated = await TranslateQuery(userInput);
             string queryRouted = await RouteQuery(queryTranslated);
-            string documents = await ConstructQuery(userInput,queryRouted);
+            if(queryRouted.Contains("general"))
+            {
+                return await _postRetrieval.GenerateResponse(userInput, "None");
+            }
+            string documents = await ConstructQuery(queryTranslated,queryRouted);
 
             return await _postRetrieval.GenerateResponse(queryTranslated, documents);
         }

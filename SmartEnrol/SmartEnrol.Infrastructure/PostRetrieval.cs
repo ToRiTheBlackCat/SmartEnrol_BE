@@ -38,7 +38,7 @@ namespace SmartEnrol.Infrastructure
                 };
                 if (!chatHistory.Any())
                 {
-                    var instructions = " . Here are your instructions in how to response:" + "1. You must not use List, use paragraph." + "2. Avoid redundant phrasing or excessive elaboration." + "3. Stick to the key points relevant to the query." + "4. Remove phrases like \"It is important to note that...\" or \"As previously mentioned...\". Get straight to the point." + "5. Use clear, direct statements." + "6. Avoid multiple or extended explanations." + "7. Do not self-reference or apologize unnecessarily." + "8. If you lack information from context then search on your owns." + "9. Reply in VietNamese";
+                    var instructions = " . Here are your instructions in how to response:" + "1. You must not use List, use paragraph." + "2. Avoid redundant phrasing or excessive elaboration." + "3. Stick to the key points relevant to the query." + "4. Remove phrases like \"It is important to note that...\" or \"As previously mentioned...\". Get straight to the point." + "5. Use clear, direct statements." + "6. Avoid multiple or extended explanations." + "7. Do not self-reference or apologize unnecessarily." + "8. If you lack information from context then search the internet." + "9. Reply in VietNamese";
                     chatHistory.Add(new Content(instructions, Roles.User));
                 }
                 var chatSession = aiModel.StartChat(config: config, history: chatHistory);
