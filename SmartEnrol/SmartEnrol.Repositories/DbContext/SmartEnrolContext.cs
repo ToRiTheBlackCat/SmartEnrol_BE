@@ -42,10 +42,6 @@ public partial class SmartEnrolContext : DbContext
     public virtual DbSet<UniMajor> UniMajors { get; set; }
 
     public virtual DbSet<University> Universities { get; set; }
-
-    public virtual DbSet<WishList> WishLists { get; set; }
-
-    public virtual DbSet<WishListItem> WishListItems { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
@@ -230,38 +226,6 @@ public partial class SmartEnrolContext : DbContext
                 .HasForeignKey(d => d.AreaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_University_Area");
-        });
-
-        modelBuilder.Entity<WishList>(entity =>
-        {
-            entity.ToTable("WishList");
-
-            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Account).WithMany(p => p.WishLists)
-                .HasForeignKey(d => d.AccountId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_WishList_Account");
-        });
-
-        modelBuilder.Entity<WishListItem>(entity =>
-        {
-            entity.HasKey(e => e.ItemId);
-
-            entity.ToTable("WishListItem");
-
-            entity.HasOne(d => d.Uni).WithMany(p => p.WishListItems)
-                .HasForeignKey(d => d.UniId)
-                .HasConstraintName("FK_WishListItem_University");
-
-            entity.HasOne(d => d.UniMajor).WithMany(p => p.WishListItems)
-                .HasForeignKey(d => d.UniMajorId)
-                .HasConstraintName("FK_WishListItem_UniMajor");
-
-            entity.HasOne(d => d.WishList).WithMany(p => p.WishListItems)
-                .HasForeignKey(d => d.WishListId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_WishListItem_WishList");
         });
 
         OnModelCreatingPartial(modelBuilder);
