@@ -12,5 +12,6 @@ namespace SmartEnrol.Services.Services
         Task<StudentAccountProfileModel?> GetAccountById(int accountId);
         Task<(IEnumerable<Account?> Accounts, int totalCounts)> GetAccounts(string? name, bool sortByNewestDate, int pageSize, int pageNumber);
         Task<List<Account>> GetAccountsByMonth(int month);
+        Task<List<StudentAccountProfileModel>> GetAccountsAsync();
     }
 }

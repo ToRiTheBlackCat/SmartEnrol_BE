@@ -6,8 +6,9 @@
     "\\SmartEnrol\\SmartEnrol.API\\Controllers",
     "\\SmartEnrol\\SmartEnrol.Repositories",
     "\\SmartEnrol\\SmartEnrol.Repositories\\Models",
+    "\\SmartEnrol\\SmartEnrol.Repositories\\Repositories",
     "\\SmartEnrol\\SmartEnrol.Services"
   ],
-  "SelectedNode": "\\SmartEnrol\\SmartEnrol.API\\Controllers\\AreaController.cs",
+  "SelectedNode": "\\SmartEnrol\\SmartEnrol.API\\Controllers\\AccountController.cs",
   "PreviewInSolutionExplorer": false
 }

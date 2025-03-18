@@ -177,6 +177,19 @@ namespace SmartEnrol.Services.Services
             return mappedAccount;
         }
 
+        public async Task<List<StudentAccountProfileModel>> GetAccountsAsync() 
+        {
+            var result = await _unitOfWork.AccountRepository.GetAllWithIncludeAsync(acc => acc.Area);
+            List<StudentAccountProfileModel> mappedList = new List<StudentAccountProfileModel>();
+            StudentAccountProfileModel item;
+            foreach (var o in result)
+            {
+                item = _mapper.Map<Account, StudentAccountProfileModel>(o);
+                mappedList.Add(item);
+            }
+            return mappedList;
+        }
+
         public async Task<List<Account>> GetAccountsByMonth(int month)
         {
             if (month >= 1 && month <= 12)
