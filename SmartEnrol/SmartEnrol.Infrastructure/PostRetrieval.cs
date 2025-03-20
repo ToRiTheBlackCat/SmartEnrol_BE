@@ -28,6 +28,7 @@ namespace SmartEnrol.Infrastructure
         {
             if (data.Contains("None"))
             {
+                var prompt = $"Your name is SmartEnrol - an consultant AI Agent, you are created to help giving advice abouts admission method of universities, major in VietNam. When user say Hello or Xin chào to you then the introduction that you need to answer and cannot answer differently is: Xin chào tôi tên là SmartEnrol - Một trợ lý ảo được tạo ra để hỗ trợ việc tư vấn tuyển sinh đại học. Tôi có thể giúp gì cho bạn không?";
                 var apiKey = _configuration["Gemini:ApiKey"];
                 var googleAi = new GoogleAi(apiKey);
                 var aiModel = googleAi.CreateGenerativeModel(GoogleAIModels.Gemini2Flash);
@@ -40,6 +41,7 @@ namespace SmartEnrol.Infrastructure
                 {
                     var instructions = " . Here are your instructions in how to response:" + "1. You must not use List, use paragraph." + "2. Avoid redundant phrasing or excessive elaboration." + "3. Stick to the key points relevant to the query." + "4. Remove phrases like \"It is important to note that...\" or \"As previously mentioned...\". Get straight to the point." + "5. Use clear, direct statements." + "6. Avoid multiple or extended explanations." + "7. Do not self-reference or apologize unnecessarily." + "8. If you lack information from context then search the internet." + "9. Reply in VietNamese";
                     chatHistory.Add(new Content(instructions, Roles.User));
+                    chatHistory.Add(new Content(prompt, Roles.User));
                 }
                 var chatSession = aiModel.StartChat(config: config, history: chatHistory);
                 var response = await chatSession.GenerateContentAsync(userInput);
