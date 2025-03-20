@@ -290,3 +290,4 @@ __pycache__/
 
 /SmartEnrol/SmartEnrol.API/appsettings.Development.json
 /SmartEnrol/SmartEnrol.API/appsettings.json
+/.vs/slnx.sqlite

@@ -65,14 +65,6 @@
       {
          "Name": "[dbo].[University]",
          "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[WishList]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[WishListItem]",
-         "ObjectType": 0
       }
    ],
    "UiHint": null,

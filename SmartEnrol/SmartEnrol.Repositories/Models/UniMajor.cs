@@ -21,6 +21,4 @@ public partial class UniMajor
     public virtual ICollection<RecommendationDetail> RecommendationDetails { get; set; } = new List<RecommendationDetail>();
 
     public virtual University Uni { get; set; }
-
-    public virtual ICollection<WishListItem> WishListItems { get; set; } = new List<WishListItem>();
 }
