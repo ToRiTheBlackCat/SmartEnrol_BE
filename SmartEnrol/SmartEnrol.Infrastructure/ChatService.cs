@@ -11,7 +11,6 @@ namespace SmartEnrol.Infrastructure
     public class ChatService : IChatService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly List<string> c;
         private readonly QueryRewrite _queryRewrite;
         private readonly QueryRouting _queryRouting;
         private readonly QueryConstruction _queryConstruction;

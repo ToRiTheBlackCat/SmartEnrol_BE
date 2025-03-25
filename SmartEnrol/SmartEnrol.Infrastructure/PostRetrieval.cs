@@ -9,8 +9,6 @@ using GenerativeAI.Types;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 using SmartEnrol.Repositories.Models;
-using GenerativeAI;
-using GenerativeAI.Types;
 
 namespace SmartEnrol.Infrastructure
 {
