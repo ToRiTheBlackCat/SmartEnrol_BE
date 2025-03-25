@@ -28,6 +28,4 @@ public partial class University
     public virtual Area Area { get; set; }
 
     public virtual ICollection<UniMajor> UniMajors { get; set; } = new List<UniMajor>();
-
-    public virtual ICollection<WishListItem> WishListItems { get; set; } = new List<WishListItem>();
 }

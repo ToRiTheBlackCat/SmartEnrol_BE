@@ -30,6 +30,4 @@ public partial class Account
     public virtual ICollection<Recommendation> Recommendations { get; set; } = new List<Recommendation>();
 
     public virtual Role Role { get; set; }
-
-    public virtual ICollection<WishList> WishLists { get; set; } = new List<WishList>();
 }

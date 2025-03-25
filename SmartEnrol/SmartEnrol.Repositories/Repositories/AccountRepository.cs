@@ -31,8 +31,7 @@ namespace SmartEnrol.Repositories.Repositories
         }
         private async Task<Account?> GetAccountByIdWithIncludeAsync(Account account)
         {
-            return await GetByIdWithIncludeAsync(account.AccountId, "AccountId", x => x.WishLists,
-                                                                                 x => x.Role,
+            return await GetByIdWithIncludeAsync(account.AccountId, "AccountId", x => x.Role,
                                                                                  x => x.Area);
         }
 
