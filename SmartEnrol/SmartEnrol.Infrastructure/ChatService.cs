@@ -52,14 +52,14 @@ namespace SmartEnrol.Infrastructure
             chatHistory.Add(userInput);
             string queryTranslated = await TranslateQuery(userInput);
             string queryRouted = await RouteQuery(queryTranslated);
-            if(queryRouted.Contains("general"))
-            {
-                //response = await _postRetrieval.GenerateResponse(userInput, "None");    
-                response = await _postRetrieval.ChatWithHistory(userInput, "None", chatHistory);
-                chatHistory.Add(response);
-                ChatHistory = chatHistory;
-                return response;
-            }
+            //if(queryRouted.Contains("general"))
+            //{
+            //    //response = await _postRetrieval.GenerateResponse(userInput, "None");    
+            //    response = await _postRetrieval.ChatWithHistory(userInput, "None", chatHistory);
+            //    chatHistory.Add(response);
+            //    ChatHistory = chatHistory;
+            //    return response;
+            //}
             string documents = await ConstructQuery(queryTranslated,queryRouted);
             //response = await _postRetrieval.GenerateResponse(queryTranslated, documents);
             response = await _postRetrieval.ChatWithHistory(queryTranslated, documents, chatHistory);
