@@ -18,21 +18,18 @@ namespace SmartEnrol.Infrastructure
         private readonly QueryRouting _queryRouting;
         private readonly QueryConstruction _queryConstruction;
         private readonly PostRetrieval _postRetrieval;
-        public ChatService(IHttpContextAccessor httpContextAccessor, 
-                            QueryRewrite queryRewrite,
-                           QueryRouting queryRouting,
-                           QueryConstruction queryConstruction,
-                           PostRetrieval postRetrieval)
         private readonly RecommendationAnalyzer _analyzeRecommend;
         private readonly RecommendationService _reccServ;
 
         public ChatService(
+            IHttpContextAccessor httpContextAccessor, 
             QueryRewrite queryRewrite, 
             QueryRouting queryRouting, 
             QueryConstruction queryConstruction, 
             PostRetrieval postRetrieval, 
             RecommendationAnalyzer analyzeRecommend, 
-            RecommendationService reccServ)
+            RecommendationService reccServ, 
+            List<string> chatHistory)
         {
             _httpContextAccessor = httpContextAccessor;
             _queryRewrite = queryRewrite;
@@ -41,6 +38,7 @@ namespace SmartEnrol.Infrastructure
             _postRetrieval = postRetrieval;
             _analyzeRecommend = analyzeRecommend;
             _reccServ = reccServ;
+            ChatHistory = chatHistory;
         }
 
         private List<string> ChatHistory
@@ -85,10 +83,9 @@ namespace SmartEnrol.Infrastructure
             response = await _postRetrieval.ChatWithHistory(queryTranslated, documents, chatHistory);
             chatHistory.Add(response);
             ChatHistory = chatHistory;
-            return response;
-            string response = await _postRetrieval.GenerateResponse(queryTranslated, documents);
-            List<int> uniMajorsIdList = await _analyzeRecommend.GetRecommendations(response);
-            if(uniMajorsIdList != null)
+            // Check for recommednation
+            List<int>? uniMajorsIdList = await _analyzeRecommend.GetRecommendations(response);
+            if (uniMajorsIdList != null)
             {
                 foreach (int id in uniMajorsIdList)
                 {
