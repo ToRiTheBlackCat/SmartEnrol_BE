@@ -6,7 +6,7 @@ namespace SmartEnrol.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ChatController : Controller
-    {
+    {        
         private readonly IChatService _chatService;
 
         public ChatController(IChatService chatService)

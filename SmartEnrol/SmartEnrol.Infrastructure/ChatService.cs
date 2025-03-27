@@ -1,4 +1,7 @@
-﻿using SmartEnrol.Services.Service;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using System.Text.Json;
+using SmartEnrol.Services.Service;
 
 namespace SmartEnrol.Infrastructure
 {
@@ -10,10 +13,16 @@ namespace SmartEnrol.Infrastructure
 
     public class ChatService : IChatService
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly QueryRewrite _queryRewrite;
         private readonly QueryRouting _queryRouting;
         private readonly QueryConstruction _queryConstruction;
         private readonly PostRetrieval _postRetrieval;
+        public ChatService(IHttpContextAccessor httpContextAccessor, 
+                            QueryRewrite queryRewrite,
+                           QueryRouting queryRouting,
+                           QueryConstruction queryConstruction,
+                           PostRetrieval postRetrieval)
         private readonly RecommendationAnalyzer _analyzeRecommend;
         private readonly RecommendationService _reccServ;
 
@@ -25,6 +34,7 @@ namespace SmartEnrol.Infrastructure
             RecommendationAnalyzer analyzeRecommend, 
             RecommendationService reccServ)
         {
+            _httpContextAccessor = httpContextAccessor;
             _queryRewrite = queryRewrite;
             _queryRouting = queryRouting;
             _queryConstruction = queryConstruction;
@@ -33,10 +43,37 @@ namespace SmartEnrol.Infrastructure
             _reccServ = reccServ;
         }
 
+        private List<string> ChatHistory
+        {
+            get
+            {
+                var session = _httpContextAccessor.HttpContext?.Session;
+                var historyJson = session?.GetString("ChatHistory");
+                return historyJson != null ? JsonSerializer.Deserialize<List<string>>(historyJson) : new List<string>();
+            }
+            set
+            {
+                var session = _httpContextAccessor.HttpContext?.Session;
+                var json = JsonSerializer.Serialize(value);
+                session?.SetString("ChatHistory", json);
+            }
+        }
+
         public async Task<string> GenerateResponse(string userInput, int accId)
         {
+            var response = "";
+            var chatHistory = ChatHistory;
+            chatHistory.Add(userInput);
             string queryTranslated = await TranslateQuery(userInput);
             string queryRouted = await RouteQuery(queryTranslated);
+            //if(queryRouted.Contains("general"))
+            //{
+            //    //response = await _postRetrieval.GenerateResponse(userInput, "None");    
+            //    response = await _postRetrieval.ChatWithHistory(userInput, "None", chatHistory);
+            //    chatHistory.Add(response);
+            //    ChatHistory = chatHistory;
+            //    return response;
+            //}
             // General chat
             if(queryRouted.Contains("general"))
             {
@@ -44,6 +81,11 @@ namespace SmartEnrol.Infrastructure
             }
             // Related to documents chat
             string documents = await ConstructQuery(queryTranslated,queryRouted);
+            //response = await _postRetrieval.GenerateResponse(queryTranslated, documents);
+            response = await _postRetrieval.ChatWithHistory(queryTranslated, documents, chatHistory);
+            chatHistory.Add(response);
+            ChatHistory = chatHistory;
+            return response;
             string response = await _postRetrieval.GenerateResponse(queryTranslated, documents);
             List<int> uniMajorsIdList = await _analyzeRecommend.GetRecommendations(response);
             if(uniMajorsIdList != null)
