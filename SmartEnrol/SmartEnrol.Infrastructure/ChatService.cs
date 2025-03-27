@@ -7,7 +7,8 @@ namespace SmartEnrol.Infrastructure
 {
     public interface IChatService
     {
-        Task<string> GenerateResponse(string userInput, int accId);
+        Task<string> GenerateResponse(string userInput);
+        Task<string> GenerateResponseWithRecommend(string userInput, int accId);
         Task<string> Test(string userInput);
     }
 
@@ -57,7 +58,7 @@ namespace SmartEnrol.Infrastructure
             }
         }
 
-        public async Task<string> GenerateResponse(string userInput, int accId)
+        public async Task<string> GenerateResponseWithRecommend(string userInput, int accId)
         {
             var response = "";
             var chatHistory = ChatHistory;
@@ -92,6 +93,29 @@ namespace SmartEnrol.Infrastructure
                     await _reccServ.Create(id, accId, response);
                 }
             }
+            return response;
+        }
+
+        public async Task<string> GenerateResponse(string userInput)
+        {
+            var response = "";
+            var chatHistory = ChatHistory;
+            chatHistory.Add(userInput);
+            string queryTranslated = await TranslateQuery(userInput);
+            string queryRouted = await RouteQuery(queryTranslated);
+            //if(queryRouted.Contains("general"))
+            //{
+            //    //response = await _postRetrieval.GenerateResponse(userInput, "None");    
+            //    response = await _postRetrieval.ChatWithHistory(userInput, "None", chatHistory);
+            //    chatHistory.Add(response);
+            //    ChatHistory = chatHistory;
+            //    return response;
+            //}
+            string documents = await ConstructQuery(queryTranslated, queryRouted);
+            //response = await _postRetrieval.GenerateResponse(queryTranslated, documents);
+            response = await _postRetrieval.ChatWithHistory(queryTranslated, documents, chatHistory);
+            chatHistory.Add(response);
+            ChatHistory = chatHistory;
             return response;
         }
 
