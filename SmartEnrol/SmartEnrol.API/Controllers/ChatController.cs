@@ -15,9 +15,16 @@ namespace SmartEnrol.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Chat(string userInput)
+        public async Task<IActionResult> Chat(string userInput, int accountId)
         {
-            string response = await _chatService.GenerateResponse(userInput);
+            string response = await _chatService.GenerateResponse(userInput,accountId);
+            return Ok(response);
+        }
+        
+        [HttpPost("test")]
+        public async Task<IActionResult> TestRecommend(string userInput)
+        {
+            string response = await _chatService.Test(userInput);
             return Ok(response);
         }
     }

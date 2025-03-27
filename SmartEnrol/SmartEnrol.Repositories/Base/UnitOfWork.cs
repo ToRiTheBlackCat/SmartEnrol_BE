@@ -16,12 +16,21 @@ namespace SmartEnrol.Repositories.Base
 
         public IAccountRepository AccountRepository { get; }
         public IAreaRepository AreaRepository { get; }
+        public IRecommendationRepository RecommendationRepository { get; }
+        public IRecommendationDetailRepository RecommendationDetailRepository { get; }
 
-        public UnitOfWork(SmartEnrolContext context, IAccountRepository accountRepository, IAreaRepository areaRepository)
+        public UnitOfWork(
+            SmartEnrolContext context,
+            IAccountRepository accountRepository,
+            IAreaRepository areaRepository,
+            IRecommendationRepository recommendationRepository,
+            IRecommendationDetailRepository recommendationDetailRepository)
         {
             _context = context;
             AccountRepository = accountRepository;
             AreaRepository = areaRepository;
+            RecommendationRepository = recommendationRepository;
+            RecommendationDetailRepository = recommendationDetailRepository;
         }
 
         public async Task BeginTransactionAsync()
