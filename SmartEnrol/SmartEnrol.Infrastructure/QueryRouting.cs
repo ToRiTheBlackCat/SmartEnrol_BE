@@ -33,7 +33,7 @@ namespace SmartEnrol.Infrastructure
 					"Area: A geographical division, such as a province, municipality, or city, that is often used to categorize schools, educational policies, and regional demographics in academic studies.";
 
 			string contextRouting = "You are an expert AI whose main purpose is natural language processing. " +
-					"Your task is to process the user's input and decide whether the user's prompt is related to the provided documents or not. " +
+					"Your task is to process the user's input and decide whether the user's prompt is related to the provided documents or not " +
 					"by parsing the user's prompt and check whether there are related phrases and keywords with concepts related to the provided documents. " +
 					"This task is used to route the user's prompt to the correct AI for querying and generating the correct response using the correct data. " +
 					"Follow these guidelines: " +
@@ -43,10 +43,10 @@ namespace SmartEnrol.Infrastructure
 					"4. Try not to deviate too far from the user's input's original intent. " +
 					"5. Don't overanalyze the context or any terms or phrases of the original question. " +
 					"Your goal is to determine either the question is related to the provided documents or the question is not related to the provided documents. " +
-					"Format the response as follow: general or special" +
-					"Return either general if you determined the context to not be related to the dataset. " +
+					"Format the response as follow: general or special. " +
+					"Return either general if you determined the context to not be related to the dataset, " +
 					"or special if you determined the context to be related to the dataset. " +
-					//"Provide between 1-2 explaination for why that prompt is routed to the path that you have chosen for it." +
+					//"Provide between 1-2 explanation for why that prompt is routed to the path that you have chosen for it." +
 					"Do not include any generic response or explanation, only output the queries in the format above. " +
 					$"Here is the document: {documentRouting}. " +
 					"And here is the question: ";

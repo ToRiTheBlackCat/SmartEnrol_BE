@@ -12,6 +12,7 @@ using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Repositories.Repositories;
 using SmartEnrol.Services.Helper;
+using SmartEnrol.Services.Service;
 using SmartEnrol.Services.Services;
 using System.Security.Claims;
 using System.Text;
@@ -76,6 +77,7 @@ builder.Services.AddScoped<QueryConstruction>();
 builder.Services.AddScoped<QueryRewrite>();
 builder.Services.AddScoped<QueryRouting>();
 builder.Services.AddScoped<PostRetrieval>();
+builder.Services.AddScoped<RecommendationAnalyzer>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 
@@ -86,6 +88,9 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAreaService, AreaService>();
 builder.Services.AddScoped<IChatService,ChatService>();
+builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+builder.Services.AddScoped<RecommendationService>();
+
 
 // Add AutoMapper service
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -99,6 +104,8 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 // Register for Repository
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAreaRepository, AreaRepository>();
+builder.Services.AddScoped<IRecommendationRepository, RecommendationRepository>();
+builder.Services.AddScoped<IRecommendationDetailRepository, RecommendationDetailRepository>();
 
 
 

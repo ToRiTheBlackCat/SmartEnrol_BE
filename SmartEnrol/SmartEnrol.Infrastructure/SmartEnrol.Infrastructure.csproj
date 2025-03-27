@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SmartEnrol.Repositories\SmartEnrol.Repositories.csproj" />
+    <ProjectReference Include="..\SmartEnrol.Services\SmartEnrol.Services.csproj" />
   </ItemGroup>
 
 </Project>
