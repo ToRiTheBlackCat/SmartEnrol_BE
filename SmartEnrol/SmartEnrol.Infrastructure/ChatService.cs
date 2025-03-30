@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using System.Text.Json;
 namespace SmartEnrol.Infrastructure
 {
     public interface IChatService
     {
-        Task<string> GenerateResponse(string userInput);
+        Task<string> GenerateResponse(string userInput, string? sessionID);
+        string GetOrCreateSessionID();
+        void DeleteSessionID(string sessionID);
     }
 
     public class ChatService : IChatService
@@ -15,7 +16,7 @@ namespace SmartEnrol.Infrastructure
         private readonly QueryRouting _queryRouting;
         private readonly QueryConstruction _queryConstruction;
         private readonly PostRetrieval _postRetrieval;
-        public ChatService(IHttpContextAccessor httpContextAccessor, 
+        public ChatService(IHttpContextAccessor httpContextAccessor,
                             QueryRewrite queryRewrite,
                            QueryRouting queryRouting,
                            QueryConstruction queryConstruction,
@@ -28,44 +29,52 @@ namespace SmartEnrol.Infrastructure
             _postRetrieval = postRetrieval;
         }
 
-        private List<string> ChatHistory
+        private ISession Session => _httpContextAccessor.HttpContext?.Session;
+        public string GetOrCreateSessionID()
         {
-            get
+            if (Session == null) return string.Empty;
+
+            string sessionID = Session.GetString("SessionID");
+            if (string.IsNullOrEmpty(sessionID))
             {
-                var session = _httpContextAccessor.HttpContext?.Session;
-                var historyJson = session?.GetString("ChatHistory");
-                return historyJson != null ? JsonSerializer.Deserialize<List<string>>(historyJson) : new List<string>();
+                sessionID = Guid.NewGuid().ToString();
+                Session.SetString("SessionID", sessionID);
             }
-            set
-            {
-                var session = _httpContextAccessor.HttpContext?.Session;
-                var json = JsonSerializer.Serialize(value);
-                session?.SetString("ChatHistory", json);
-            }
+            return sessionID;
         }
 
-        public async Task<string> GenerateResponse(string userInput)
+        public void DeleteSessionID(string sessionID)
         {
-            var response = "";
-            var chatHistory = ChatHistory;
+            if (Session == null) return;
+
+            Session.Remove("SessionID");
+            Session.Remove(sessionID);
+        }
+
+        public async Task<string> GenerateResponse(string userInput, string? sessionID)
+        {
+            var chatHistory = GetChatHistory(sessionID);
             chatHistory.Add(userInput);
             string queryTranslated = await TranslateQuery(userInput);
             string queryRouted = await RouteQuery(queryTranslated);
-            //if(queryRouted.Contains("general"))
-            //{
-            //    //response = await _postRetrieval.GenerateResponse(userInput, "None");    
-            //    response = await _postRetrieval.ChatWithHistory(userInput, "None", chatHistory);
-            //    chatHistory.Add(response);
-            //    ChatHistory = chatHistory;
-            //    return response;
-            //}
-            string documents = await ConstructQuery(queryTranslated,queryRouted);
-            //response = await _postRetrieval.GenerateResponse(queryTranslated, documents);
-            response = await _postRetrieval.ChatWithHistory(queryTranslated, documents, chatHistory);
-            chatHistory.Add(response);
-            ChatHistory = chatHistory;
+            string documents = await ConstructQuery(queryTranslated, queryRouted);
+            var response = await _postRetrieval.ChatWithHistory(queryTranslated, documents, chatHistory);
+            SaveChatHistory(sessionID, chatHistory);
             return response;
         }
+
+        private List<string> GetChatHistory(string sessionID)
+        {
+            var historyJson = Session?.GetString(sessionID);
+            return historyJson != null ? JsonSerializer.Deserialize<List<string>>(historyJson) : new List<string>();
+        }
+
+        private void SaveChatHistory(string sessionID, List<string> history)
+        {
+            var json = JsonSerializer.Serialize(history);
+            Session?.SetString(sessionID, json);
+        }
+
         private async Task<string> TranslateQuery(string userInput)
         {
             return await _queryRewrite.ReWrite(userInput);
@@ -80,6 +89,5 @@ namespace SmartEnrol.Infrastructure
         {
             return await _queryConstruction.GenerateQueryString(userInput, queryRouted);
         }
-
     }
 }
