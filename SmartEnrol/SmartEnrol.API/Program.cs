@@ -56,6 +56,18 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<SmartEnrolContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add session
+builder.Services.AddDistributedMemoryCache(); 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); 
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 // Register for CORS policy
 builder.Services.AddCors(options =>
@@ -78,10 +90,6 @@ builder.Services.AddScoped<QueryRouting>();
 builder.Services.AddScoped<PostRetrieval>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-
-
-
-
 // Register for Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAreaService, AreaService>();
@@ -91,7 +99,6 @@ builder.Services.AddScoped<IChatService,ChatService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
-
 // Register for UnitOfWork and GenericRepository
 builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -99,8 +106,6 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 // Register for Repository
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAreaRepository, AreaRepository>();
-
-
 
 // Register for JWT Authentication & Authorization
 builder.Services.AddAuthentication(options =>
@@ -142,15 +147,6 @@ if (FirebaseApp.DefaultInstance == null)
         });
     }
 }
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
-
 
 var app = builder.Build();
 

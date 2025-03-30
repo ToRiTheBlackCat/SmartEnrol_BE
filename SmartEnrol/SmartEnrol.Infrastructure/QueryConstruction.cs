@@ -1,11 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Text.Json;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SmartEnrol.Repositories.Models;
-using Microsoft.EntityFrameworkCore;
+using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Globalization;
-using GenerativeAI.Types;
 
 namespace SmartEnrol.Infrastructure
 {
@@ -60,8 +58,6 @@ namespace SmartEnrol.Infrastructure
             }
             var prompts = "Your mission is to receive user input and the revelant data about user input. If you receive the question out of your scope then just response None  -. If the question is in your scope then response with the data. You must answer all in VietNamese base on the data you received . And here is the user input: ";
 
-            //var prompts = ".Your name is SmartEnrol, you are created to become a consultant agent that help give advice about admission method of universities in VietNam but if the user chat anything that out of your scopes or request for more information about universities, majors,..., you can answer it with your knowledge and if user continure to asking please provide a continuously answer for them until they start a new conversation.Help them answer their question just make the shortest and clearest answer. Here is the input of the user: ";
-
             var requestBody = new
             {
                 contents = new[]
@@ -99,7 +95,6 @@ namespace SmartEnrol.Infrastructure
             return "No valid response from Gemini.";
         }
 
-
         private string GenerateSchoolInfoOfArea()
         {
             var universities = context.Universities.Include(x => x.Area);
@@ -111,36 +106,8 @@ namespace SmartEnrol.Infrastructure
             }
 
             return contextString;
-            //string pattern = @"(?:\b(?:in|at|located in|near|around|within|in the area of|province of|city of)\s+(?:the\s+)?)([A-Z][a-zA-Z'-]+(?:\s+[A-Z][a-zA-Z'-]+)?)(?=\s+(?:City|Province|Region|District|area|\?|or|$))";
-            //Match match = Regex.Match(userInput, pattern, RegexOptions.IgnoreCase);
-
-            //if (!match.Success)
-            //{
-            //    return "Không xác định được khu vực từ câu hỏi.";
-            //}
-
-            //string areaName = match.Groups[1].Value.Trim();
-            //string normalizedAreaName = NormalizeString(areaName);
-
-            //var matchedUniversities = context.Universities
-            //    .Include(x => x.Area)
-            //    .AsEnumerable()
-            //    .Where(x => NormalizeString(x.Area.AreaName).Contains(normalizedAreaName))
-            //    .ToList();
-
-            //if (!matchedUniversities.Any())
-            //{
-            //    return $"Không tìm thấy trường đại học nào ở khu vực {areaName}.";
-            //}
-
-            //return $"Ở khu vực {areaName}, có các trường đại học sau: {string.Join(", ", matchedUniversities.Select(u => u.UniName))}.";
         }
-        //private string NormalizeString(string input)
-        //{
-        //    return string.Concat(input.Normalize(NormalizationForm.FormD)
-        //                              .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark))
-        //                 .ToLower();
-        //}
+
         private string GenerateUniMajorAndAdmissionMethods()
         {
             var universities = context.Universities.Include(x => x.Area)
@@ -167,6 +134,7 @@ namespace SmartEnrol.Infrastructure
 
             return contextString;
         }
+
         private string GenerateCharecteristicContext()
         {
 

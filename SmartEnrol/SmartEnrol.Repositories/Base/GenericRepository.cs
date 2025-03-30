@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartEnrol.Repositories.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartEnrol.Repositories.Base
 {
@@ -40,7 +35,6 @@ namespace SmartEnrol.Repositories.Base
             }
 
             return await query.ToListAsync();
-
         }
 
         public T? GetById(int id)
@@ -82,7 +76,7 @@ namespace SmartEnrol.Repositories.Base
             return await query.FirstOrDefaultAsync(entity => EF.Property<int>(entity, typeId) == TId);
 
         }
-       
+
         public void Add(T item)
         {
             _dbSet.Add(item);
@@ -101,15 +95,6 @@ namespace SmartEnrol.Repositories.Base
             tracker.State = EntityState.Modified;
             _context.SaveChanges();
         }
-
-        //public async Task<int> UpdateAsyncReturnInt(T item)
-        //{
-        //    var tracker = _context.Attach(item);
-        //    tracker.State = EntityState.Modified;
-        //    return await _context.SaveChangesAsync();
-
-        //}
-
         public bool Delete(T item)
         {
             _dbSet.Remove(item);

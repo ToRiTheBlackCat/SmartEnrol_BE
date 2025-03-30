@@ -1,20 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SmartEnrol.Repositories.Repositories
 {
     public class AccountRepository : GenericRepository<Account>, IAccountRepository
     {
         public AccountRepository(SmartEnrolContext context) : base(context) { }
-
 
         public async Task<Account?> GetAccountByEmailAndPasswordAsync(string email, string password)
         {
@@ -29,6 +21,7 @@ namespace SmartEnrol.Repositories.Repositories
 
             return includedAccount;
         }
+
         private async Task<Account?> GetAccountByIdWithIncludeAsync(Account account)
         {
             return await GetByIdWithIncludeAsync(account.AccountId, "AccountId", x => x.Role,
@@ -57,9 +50,9 @@ namespace SmartEnrol.Repositories.Repositories
             return await _dbSet.Where(s => s.CreatedDate.Month == month).ToListAsync();
         }
 
-        public async Task<(IEnumerable<Account?> Accounts, int totalCounts)> GetAllAccountsAsync(
-            int pageSize = 10, 
-            int pageNumber = 1)
+        public async Task<(IEnumerable<Account?> Accounts, int totalCounts)> GetAllAccountsAsync( 
+                                                                            int pageSize = 10, 
+                                                                            int pageNumber = 1)
         {
             var totalCount = await _context.Set<Account>().CountAsync();
             var accounts = await _context.Set<Account>()
@@ -71,9 +64,9 @@ namespace SmartEnrol.Repositories.Repositories
         }
 
         public async Task<(IEnumerable<Account?> Accounts, int totalCounts)> GetAccountsByNameAsync(
-            string? name, 
-            int pageSize, 
-            int pageNumber)
+                                                                            string? name,
+                                                                            int pageSize,
+                                                                            int pageNumber)
         {
             var totalCount = await _context.Set<Account>().CountAsync();
             var accounts = await _context.Set<Account>()
