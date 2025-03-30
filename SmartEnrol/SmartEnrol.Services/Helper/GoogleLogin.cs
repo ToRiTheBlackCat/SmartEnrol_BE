@@ -1,15 +1,8 @@
-﻿using Google.Apis.Auth;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration;
 using SmartEnrol.Repositories.Base;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.Constant;
 using SmartEnrol.Services.ViewModels.Student;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartEnrol.Services.Helper
 {
@@ -54,7 +47,7 @@ namespace SmartEnrol.Services.Helper
                     };
                     await _unitOfWork.AccountRepository.AddAsync(newAccount);
                     await _unitOfWork.SaveChangesAsync();
-                    
+
 
                     var foundUser = await _unitOfWork.AccountRepository.GetAccountByEmailAndPasswordAsync(request.Email, pass);
                     accessToken = _authenticationJWT.GenerateJwtToken(foundUser);

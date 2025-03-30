@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SmartEnrol.Services.Constant
+﻿namespace SmartEnrol.Services.Constant
 {
     public static class ConstantEnum
     {
@@ -19,6 +13,5 @@ namespace SmartEnrol.Services.Constant
             STUDENT = 2,
             ADMIN = 1
         }
-
     }
 }

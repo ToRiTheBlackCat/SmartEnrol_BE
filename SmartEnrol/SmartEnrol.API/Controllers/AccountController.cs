@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartEnrol.Infrastructure;
-using SmartEnrol.Repositories.Models;
 using SmartEnrol.Services.Constant;
 using SmartEnrol.Services.Helper;
 using SmartEnrol.Services.Services;
@@ -52,7 +50,7 @@ namespace SmartEnrol.API.Controllers
                     Accounts = result.Accounts
                 });
         }
-        
+
         /// <summary>
         /// Get all account
         /// Return List of all account
@@ -68,7 +66,6 @@ namespace SmartEnrol.API.Controllers
                 })
                 : Ok(result);
         }
-
 
         /// <summary>
         /// Get Account detail by id
@@ -91,6 +88,7 @@ namespace SmartEnrol.API.Controllers
                     account
                 });
         }
+
         /// <summary>
         /// Login account with email and password
         /// LoginModel
@@ -163,10 +161,10 @@ namespace SmartEnrol.API.Controllers
 
             var (resultString, submittedData) = await _accountService.AccountSignup(account);
             return Ok(new
-            {
-                result = resultString,
-                submitData = submittedData
-            }
+                {
+                    result = resultString,
+                    submitData = submittedData
+                }
             );
         }
 
@@ -181,6 +179,7 @@ namespace SmartEnrol.API.Controllers
             //Check required fields
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             //Check if account exist
             var check = await _accountService.CheckIfExist(model.AccountId);
             if (!check)

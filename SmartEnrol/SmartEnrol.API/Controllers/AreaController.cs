@@ -22,7 +22,7 @@ namespace SmartEnrol.API.Controllers
         public async Task<IActionResult> GetAreaList()
         {
             var result = await _serv.GetAreasAsync();
-            // Shorthand if statement
+            
             return result == null
                 ? NotFound(new
                 {

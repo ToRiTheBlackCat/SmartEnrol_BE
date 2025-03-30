@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using SmartEnrol.Repositories.Models;
 using SmartEnrol.Repositories.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartEnrol.Repositories.Base
 {
@@ -66,12 +61,10 @@ namespace SmartEnrol.Repositories.Base
                 _disposed = true;
             }
         }
-
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
     }
 }

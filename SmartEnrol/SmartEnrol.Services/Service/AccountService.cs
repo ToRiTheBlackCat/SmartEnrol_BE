@@ -177,7 +177,7 @@ namespace SmartEnrol.Services.Services
             return mappedAccount;
         }
 
-        public async Task<List<StudentAccountProfileModel>> GetAccountsAsync() 
+        public async Task<List<StudentAccountProfileModel>> GetAccountsAsync()
         {
             var result = await _unitOfWork.AccountRepository.GetAllWithIncludeAsync(acc => acc.Area);
             List<StudentAccountProfileModel> mappedList = new List<StudentAccountProfileModel>();
@@ -204,7 +204,7 @@ namespace SmartEnrol.Services.Services
                 result = await _unitOfWork.AccountRepository.GetAllAccountsAsync(pageSize, pageNumber);
             else
                 result = await _unitOfWork.AccountRepository.GetAccountsByNameAsync(name, pageSize, pageNumber);
-            if(result.Accounts != null)
+            if (result.Accounts != null)
             {
                 if (sortByNewestDate)
                     return (result.Accounts.OrderByDescending(a => a.CreatedDate), result.totalCounts);
