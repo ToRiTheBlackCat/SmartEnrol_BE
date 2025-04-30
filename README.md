@@ -1,6 +1,6 @@
 # ====== SmartEnrol_Back-end Project ======
 
-##👥 Members
+## 👥 Members
 
 - **NGUYỄN HUỲNH MINH TRÍ** - LEADER / BACK-END DEV  
 - **CHÂU ANH TUẤN** - MOBILE DEV
